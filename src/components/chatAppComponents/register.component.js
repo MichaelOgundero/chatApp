@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react'//useEffect is like compnentdidmount it runs before everything loads
+import React, { useState } from 'react'//useEffect is like compnentdidmount it runs before everything loads
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import CheckBox from '@material-ui/core/Checkbox'
 import Link from '@material-ui/core/Link'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
@@ -24,7 +22,6 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import IconButton from '@material-ui/core/IconButton'
 
 import axios from 'axios'
-import { red } from '@material-ui/core/colors'
 import { useHistory } from 'react-router-dom'
 
 
@@ -175,8 +172,6 @@ export default function Register(){
     const [snackBarStatus, setSnackBarStatus] = useState(false);
     const [errorSnackBar, setErrorSnackBar] = useState(false);
 
-    const[usernameTakenError, setUsernameTakenError] = useState(false);
-
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("")
     const [username, setUsername] = useState("");
@@ -193,8 +188,6 @@ export default function Register(){
     
     const [showPassword, setShowPassword] = useState(false);
 
-    const [textErrorColor, setTextErrorColor] = useState(classes.textField);
-    const [errorVal, setErrorVal] = useState(false);
 
     const [firstNameErrorColor, setFirstNameErrorColor] = useState(classes.textField);
     const [firstNameErrorVal, setFirstNameErrorVal] = useState(false);
@@ -253,11 +246,13 @@ export default function Register(){
                     setUsernameErrorColor(classes.textFieldError)
                     setUsernameErrorVal(true)
                     setUsernameErrorText("Username Taken")
+                    setErrorSnackBar(true);
                  }else if(err.response.data.message === "email taken"){
                     setIsLoading(false);
                     setEmailErrorColor(classes.textFieldError)
                     setEmailErrorVal(true)
-                    setEmailErrorText("Email Taken") 
+                    setEmailErrorText("Email Taken")
+                    setErrorSnackBar(true); 
                  }else{
                     setIsLoading(false);
                     setErrorSnackBar(true);
@@ -428,7 +423,6 @@ export default function Register(){
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        autoFocus = {usernameTakenError}
                                         autoComplete="username"
                                         name="username"
                                         variant="standard"
@@ -546,7 +540,7 @@ export default function Register(){
                             >
                                 Register
                                 <Fade in={isLoading} style={{position:'absolute',right:'10px'}}>
-                                    <CircularProgress size="1.25rem" thickness="12" color="white"/>
+                                    <CircularProgress size="1.25rem" thickness={12} color="inherit"/>
                                 </Fade>
                             </Button>
                             <Grid container justify="center" alignItems="center">

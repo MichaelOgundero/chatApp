@@ -14,12 +14,20 @@ import Person from '@material-ui/icons/Person'
 import Lock from '@material-ui/icons/Lock'
 
 import {Link as RouterLink} from 'react-router-dom'
-import { InputAdornment } from '@material-ui/core'
+import { InputAdornment, Fade, CircularProgress, Snackbar } from '@material-ui/core'
 import Visibility from '@material-ui/icons/Visibility'
+import MuiAlert from '@material-ui/lab/Alert'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import IconButton from '@material-ui/core/IconButton'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
+
+
+
+
+function Alert(props){
+    return <MuiAlert elevation={6} variany="filled" {...props}/>
+}
 
 function Copyright(){
     return(
@@ -89,6 +97,14 @@ const useStyles = makeStyles(theme=>({
             borderBottomColor: "#02aab0",
           },
     },
+    textFieldError:{
+        '& label.Mui-focused': {
+            color: '#eb3349'
+        },
+        '& .MuiInput-underline:after': {
+            borderBottomColor: '#eb3349'
+        },
+    },
     marginContainer:{
        border: "none",
        marginTop: "40px",
@@ -122,26 +138,63 @@ export default function Login(){
     const classes = useStyles();
 
     const history = useHistory();
+
+    const[isLoading, setIsLoading] = useState(false); 
+    const [errorSnackBar, setErrorSnackBar] = useState(false);
+
+    const[usernameErrorColor, setUsernameErrorColor] = useState(classes.textField)
+    const[usernameErrorVal, setUsernameErrorVal] = useState(false);
+    const[passwordErrorColor, setPasswordErrorColor] = useState(classes.textField);
+    const[passwordErrorVal, setPasswordErrorVal] = useState(false)
+    const[errorText, setErrorText] = useState(null)
+
     const onLogin = (e) => {
         e.preventDefault();
+        
+        setErrorText(null)
+        setUsernameErrorColor(classes.textField);
+        setUsernameErrorVal(false);
+        setPasswordErrorColor(classes.textField);
+        setPasswordErrorVal(false);
 
         const user = {
             usernameEmail: usernameEmail,
             password: password
         }
 
+        setIsLoading(true);
+
         axios.post('http://localhost:5000/authentication/login', user)
              .then(res => {
                 // console.log(res.data.message)
+                 setIsLoading(false)
                  localStorage.clear()
                  localStorage.setItem('usertoken', res.data.token)
                  localStorage.setItem('refreshToken', res.data.refreshToken)
                  history.push(`/user/${res.data.username}`);
+                 setUsernameEmail("")
+                 setPassword("")
+                 setErrorText(null)
                 })
-             .catch(err => console.log(err))
+             .catch(err => {
+                 console.log(err)
+                 setErrorText(
+                    <Fade in={true}>
+                    <Box mb={1} pb={1}>
+                            <Typography variant="h5" color="error" style={{fontSize:"10px", fontWeight:"bold"}}>
+                                Invalid username/email or password
+                            </Typography>
+                        </Box>
+                    </Fade>
+                 )
+                 setIsLoading(false);
+                 setUsernameErrorVal(true);
+                 setUsernameErrorColor(classes.textFieldError)
+                 setPasswordErrorVal(true);
+                 setPasswordErrorColor(classes.textFieldError)
+                 setErrorSnackBar(true);
+                })
         
-        setUsernameEmail("")
-        setPassword("")
     }
 
     const [usernameEmail, setUsernameEmail] = useState("");
@@ -178,7 +231,7 @@ export default function Login(){
                                 Sign In
                             </Typography>
                         </Box>
-
+                        {errorText}
                         <form className={classes.form} >
                             <Grid container spacing={1}>
                                 <Grid item xs={12}>
@@ -190,9 +243,10 @@ export default function Login(){
                                         fullWidth
                                         id="usernameEmail"
                                         label="Username or Email"
+                                        error={usernameErrorVal}
                                         value = {usernameEmail}
+                                        className={usernameErrorColor}
                                         onChange = {onChangeUsernameEmail}
-                                        className={classes.textField}
                                         InputProps={{
                                             startAdornment: (
                                                 <InputAdornment position="start">
@@ -214,7 +268,8 @@ export default function Login(){
                                         label="Password"
                                         value = {password}
                                         onChange = {onChangePassword}
-                                        className={classes.textField}
+                                        error={passwordErrorVal}
+                                        className={passwordErrorColor}
                                         InputProps={{
                                             startAdornment: (
                                                 <InputAdornment position="start">
@@ -251,6 +306,9 @@ export default function Login(){
                                 onClick={onLogin}
                             >
                                 Sign In
+                                <Fade in={isLoading} style={{position:'absolute',right:'10px'}}>
+                                    <CircularProgress size="1.25rem" thickness={12} color="inherit"/>
+                                </Fade>
                             </Button>
                             <Grid container justify="center" alignItems="center">
                                 <Grid item >
@@ -271,6 +329,26 @@ export default function Login(){
                     </Box>
                </Container>
             </Grid>
+            <Snackbar 
+                anchorOrigin={{vertical: "bottom", horizontal:"left"}}
+                open={errorSnackBar}
+                onClose={(event, reason)=>{
+                    if(reason==='clickaway'){
+                        return;
+                    }
+                    setErrorSnackBar(false)
+                }}
+                autoHideDuration={5000}>
+                
+                <Alert severity="error" onClose={(event, reason)=>{
+                    if(reason==='clickaway'){
+                        return;
+                    }
+                    setErrorSnackBar(false)
+                }}>
+                    Something went wrong
+                </Alert>
+            </Snackbar>
         </Grid>
     )
 }
