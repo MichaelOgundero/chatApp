@@ -14,8 +14,6 @@ const saltRounds = 17;
 
 router.route('/register').post((req, res)=>{
     const {firstName, lastName, email, username, password, confirmPassword} = req.body;
-    const usernameTaken = false;
-    const emailTaken = false;
     
     Authentication.find({
         $or: [
@@ -63,45 +61,6 @@ router.route('/register').post((req, res)=>{
         }
 
     })
-
-   /* Authentication.count({
-        $or: [
-            {username: username},
-            {email: email}
-        ]
-    })
-    .then(count => {
-        if(count>0){
-            res.status(400).json({
-                success: "false",
-                message: "username or email taken"
-            })
-        }else{
-            if(password === confirmPassword){
-                bcrypt
-                    .genSalt(saltRounds)
-                    .then(salt=>{
-                        //console.log(`Salt: ${salt}`)
-                        return bcrypt.hash(password, salt)
-                    })
-                    .then(hash => {
-                        const newAuthentication = new Authentication({
-                            firstName: firstName,
-                            lastName: lastName,
-                            email: email,
-                            username: username,
-                            password: hash
-                        });
-                        newAuthentication.save()
-                        .then(()=>res.status(200).json('user created'))
-                        .catch(err=>res.status(400).json('error: ' + err));
-                    })
-        
-            }else{
-                res.status(400).send('passwords dont match')
-            }
-        }
-    })*/
     
 })
 
