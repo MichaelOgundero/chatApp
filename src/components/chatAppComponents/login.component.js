@@ -192,6 +192,7 @@ export default function Login(){
                  setUsernameErrorColor(classes.textFieldError)
                  setPasswordErrorVal(true);
                  setPasswordErrorColor(classes.textFieldError)
+                 setPassword("")
                  setErrorSnackBar(true);
                 })
         
