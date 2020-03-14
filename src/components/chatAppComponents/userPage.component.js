@@ -174,42 +174,65 @@ export default function UserPage(props){
 
     const [userData, setUserData] = useState([])
     const [open, setOpen] = useState(false);
-
-    const nameClick = () =>{
-        setOpen(!open);
-    }
-
-    const onLogout = (e) =>{
-        e.preventDefault();
-
-        axios.post('http://localhost:5000/authentication/logout')
-             .then(res =>{
-                console.log("aaa")
-                localStorage.clear()
-                history.push('/login')
-             })
-             .catch(err=>console.log(err))
-
-    }
+    const [isLoading, setIsLoading] = useState(true);
     
 
     useEffect(()=>{
-        loadUserData()
-    }, [])
+        let unMounted = false;
+        //_isMounted && loadUserData()
 
-    const loadUserData = () =>{
-        //console.log("user id: " + props.match.params.user);
         const config = {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('usertoken')}`
-            }
+            },
+        }
+        axios.get(`http://localhost:5000/user/user_info/${props.match.params.user}`, config)
+             .then(res=>{
+                if(!unMounted){
+                    setUserData(userData.push(res.data))
+                    setIsLoading(false)
+                    console.log(userData)
+                }
+             })
+             .catch(err=>console.log(err))
+
+        return ()=>{
+            unMounted = true;
+        }
+
+    },[])//useeffect will only be called when userdata changes
+
+    const loadUserData = () =>{
+
+        setIsLoading(true);
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('usertoken')}`
+            },
+            
         }
         axios.get(`http://localhost:5000/user/user_info/${props.match.params.user}`, config)
              .then(res=>{
                 setUserData(userData.push(res.data))
+                setIsLoading(false)
                 console.log(userData)
              })
              .catch(err=>console.log(err))
+    }
+
+    const onLogout = (e) =>{
+        e.preventDefault();
+        axios.post('http://localhost:5000/authentication/logout')
+             .then(res =>{
+                localStorage.clear()
+                history.push('/login')
+             })
+             .catch(err=>console.log(err))
+    }
+
+    const nameClick = () =>{
+        setOpen(!open);
     }
 
     function formRow(){
@@ -261,9 +284,16 @@ export default function UserPage(props){
         )
     }
 
+    if(isLoading){
+        console.log("loading")
+        return <div>Loading..</div>
+    }
+
+
     return(
         <Container fixed  className={classes.backgroundContainer}>
             <Grid container spacing={0} component="main" className={classes.root}>
+                <CssBaseline/>
                 <Grid item xs={false} sm={4} md={2} className={classes.gridOne}>
                     <Container style={{margin:0,padding:0}}>
                         <div className={classes.paper}>
@@ -438,7 +468,14 @@ export default function UserPage(props){
                     </Container>
                 </Grid>
                 <Grid item xs={12} sm={8} md={8} className={classes.gridTwo}>
+                    <Container style={{ margin:0,padding:0}}>
+                        <div style={{border:"1px solid blue",width:"100%", height:"300px", maxHeight:"300x"}}> 
 
+                        </div>
+                        <div style={{border:"1px solid red",width:"100%", height:"100%", maxHeight:"100%"}}>
+
+                        </div>
+                    </Container>
                 </Grid>
                 <Grid item xs={false} sm={false} md={2} className={classes.gridThree}>
 

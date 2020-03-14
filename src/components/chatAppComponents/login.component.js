@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import CheckBox from '@material-ui/core/Checkbox'
 import Paper from '@material-ui/core/Paper'
+import Link from '@material-ui/core/Link'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
@@ -33,9 +34,9 @@ function Copyright(){
     return(
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <RouterLink color="inherit" to="/" style={{textDecoration:"none"}}>
+            <Link color="inherit" href="#">
                 ChatApp
-            </RouterLink>{' '}
+            </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
         </Typography>
@@ -171,10 +172,10 @@ export default function Login(){
                  localStorage.clear()
                  localStorage.setItem('usertoken', res.data.token)
                  localStorage.setItem('refreshToken', res.data.refreshToken)
-                 history.push(`/user/${res.data.username}`);
                  setUsernameEmail("")
                  setPassword("")
                  setErrorText(null)
+                 history.push(`/user/${res.data.username}`);
                 })
              .catch(err => {
                  console.log(err)
