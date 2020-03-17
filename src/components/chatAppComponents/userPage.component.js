@@ -20,7 +20,7 @@ import EmailIcon from '@material-ui/icons/Email'
 import PersonIcon from '@material-ui/icons/Person'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import BlockIcon from '@material-ui/icons/Block'
-import {ExpandMore, ExpandLess, ExitToApp} from '@material-ui/icons'
+import {ExpandMore, ExpandLess, ExitToApp, MoreHoriz} from '@material-ui/icons'
 import { useHistory } from 'react-router-dom'
 
 
@@ -455,6 +455,18 @@ export default function UserPage(props){
                                             </IconButton>
                                         </ListItemSecondaryAction>
                                     </ListItem>
+                                    <Hidden mdUp>
+                                        <ListItem button>
+                                            <ListItemIcon>
+                                                <MoreHoriz style={{fill:"white"}}/>
+                                            </ListItemIcon>
+                                            <ListItemText primary={
+                                                <Typography variant='h5' className={classes.contentText}>
+                                                    {"More"}
+                                                </Typography>}
+                                            />
+                                        </ListItem>
+                                    </Hidden>
                                 </List>
                             </div>
                             <div style={{minWidth:'100%', minHeight:'100%', background:"#263031"}}>
