@@ -14,7 +14,7 @@ import SearchIcon from '@material-ui/icons/Search'
 import Box from '@material-ui/core/Box'
 import {deepOrange, deepPurple} from '@material-ui/core/colors'
 import Badge from '@material-ui/core/Badge';
-import { InputAdornment } from '@material-ui/core'
+import { InputAdornment, Hidden } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import EmailIcon from '@material-ui/icons/Email'
 import PersonIcon from '@material-ui/icons/Person'
@@ -22,6 +22,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import BlockIcon from '@material-ui/icons/Block'
 import {ExpandMore, ExpandLess, ExitToApp} from '@material-ui/icons'
 import { useHistory } from 'react-router-dom'
+
 
 
 const StyledBadge = withStyles(theme => ({
@@ -62,7 +63,7 @@ const useStyles = makeStyles(theme=>({
         minWidth:"100vw"
     },
     root: {
-        maxWidth:'85vw',
+        //maxWidth:'85vw',
         margin: 'auto',
         background: theme.palette.common.black
     },
@@ -75,7 +76,7 @@ const useStyles = makeStyles(theme=>({
         border: '1px solid yellow',
     },
     gridThree:{
-        border: '1px solid white',
+        border: '1px solid red',
     },   
      paper: {
          margin:theme.spacing(0),
@@ -163,7 +164,11 @@ const useStyles = makeStyles(theme=>({
         //paddingLeft:"32px",
         fontWeight:"bold", 
         fontSize:"15", 
-        color:"white"}
+        color:"white"
+    },
+    rootDiv: {
+        flexGrow: 1
+    }
 
 
 }))
@@ -292,9 +297,11 @@ export default function UserPage(props){
 
     return(
         <Container fixed  className={classes.backgroundContainer}>
+            <div className={classes.rootDiv}>
             <Grid container spacing={0} component="main" className={classes.root}>
                 <CssBaseline/>
-                <Grid item xs={false} sm={4} md={2} className={classes.gridOne}>
+                <Hidden xsDown>
+                <Grid item xs={false} sm={4} md={3} lg={2} className={classes.gridOne}>
                     <Container style={{margin:0,padding:0}}>
                         <div className={classes.paper}>
                             <div style={{minWidth:'100%', minHeight:'100%'}}>
@@ -467,7 +474,9 @@ export default function UserPage(props){
                         </div>
                     </Container>
                 </Grid>
-                <Grid item xs={12} sm={8} md={8} className={classes.gridTwo}>
+                </Hidden>
+               
+                <Grid item xs={12} sm={8} md={7} lg={8} className={classes.gridTwo}>
                     <Container style={{ margin:0,padding:0}}>
                         <div style={{border:"1px solid blue",width:"100%", height:"300px", maxHeight:"300x"}}> 
 
@@ -477,10 +486,14 @@ export default function UserPage(props){
                         </div>
                     </Container>
                 </Grid>
-                <Grid item xs={false} sm={false} md={2} className={classes.gridThree}>
+                
+                <Hidden smDown>
+                <Grid item xs={false} sm={false} md={2} lg={2} className={classes.gridThree}>
 
                 </Grid>
+                </Hidden>
             </Grid>
+            </div>
         </Container>
     )
 }
