@@ -125,6 +125,7 @@ const useStyles = makeStyles(theme=>({
           '& .MuiInput-underline:after': {
             borderBottomColor: '#ffffff',
           },
+        width:"100%"  
 
     },
     inputColor:{
@@ -301,7 +302,7 @@ export default function UserPage(props){
             <Grid container spacing={0} component="main" className={classes.root}>
                 <CssBaseline/>
                 <Hidden xsDown>
-                <Grid item xs={false} sm={4} md={3} lg={2} className={classes.gridOne}>
+                <Grid item xs={false} sm={3} md={3} lg={2} xl={2} className={classes.gridOne}>
                     <Container style={{margin:0,padding:0}}>
                         <div className={classes.paper}>
                             <div style={{minWidth:'100%', minHeight:'100%'}}>
@@ -476,7 +477,7 @@ export default function UserPage(props){
                 </Grid>
                 </Hidden>
                
-                <Grid item xs={12} sm={8} md={7} lg={8} className={classes.gridTwo}>
+                <Grid item xs={12} sm={9} md={7} lg={8} xl={8} className={classes.gridTwo}>
                     <Container style={{ margin:0,padding:0}}>
                         <div style={{border:"1px solid blue",width:"100%", height:"300px", maxHeight:"300x"}}> 
 
@@ -488,7 +489,7 @@ export default function UserPage(props){
                 </Grid>
                 
                 <Hidden smDown>
-                <Grid item xs={false} sm={false} md={2} lg={2} className={classes.gridThree}>
+                <Grid item xs={false} sm={false} md={2} lg={2} xl={2} className={classes.gridThree}>
 
                 </Grid>
                 </Hidden>
