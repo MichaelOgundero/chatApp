@@ -8,13 +8,13 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
 import { TextField, Typography, List, ListItem,ListItemSecondaryAction,
-         ListItemIcon, ListItemText, InputLabel, ListItemAvatar, Collapse, ListSubheader } from '@material-ui/core';
+         ListItemIcon, ListItemText, InputLabel, ListItemAvatar, Collapse, ListSubheader, CircularProgress } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar'
 import SearchIcon from '@material-ui/icons/Search'
 import Box from '@material-ui/core/Box'
 import {deepOrange, deepPurple} from '@material-ui/core/colors'
 import Badge from '@material-ui/core/Badge';
-import { InputAdornment, Hidden } from '@material-ui/core'
+import { InputAdornment, Hidden, Backdrop } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import EmailIcon from '@material-ui/icons/Email'
 import PersonIcon from '@material-ui/icons/Person'
@@ -56,6 +56,10 @@ const StyledBadge = withStyles(theme => ({
 
 
 const useStyles = makeStyles(theme=>({
+    backdrop:{
+        zIndex: theme.zIndex.drawer + 1,
+        color: "#fff"
+    },
     backgroundContainer:{
         //background:'#000000',
         background:'linear-gradient(45deg, #29323c 30%, #485563 90%)', 
@@ -181,7 +185,7 @@ export default function UserPage(props){
     const [userData, setUserData] = useState([])
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    
+    const [backdropStatus, setBackdropStatus] = useState(true);
 
     useEffect(()=>{
         let unMounted = false;
@@ -197,6 +201,7 @@ export default function UserPage(props){
                 if(!unMounted){
                     setUserData(userData.push(res.data))
                     setIsLoading(false)
+                    setBackdropStatus(false)
                     console.log(userData)
                 }
              })
@@ -208,7 +213,7 @@ export default function UserPage(props){
 
     },[])//useeffect will only be called when userdata changes
 
-    const loadUserData = () =>{
+   /* const loadUserData = () =>{
 
         setIsLoading(true);
 
@@ -225,7 +230,7 @@ export default function UserPage(props){
                 console.log(userData)
              })
              .catch(err=>console.log(err))
-    }
+    }*/
 
     const onLogout = (e) =>{
         e.preventDefault();
@@ -292,7 +297,11 @@ export default function UserPage(props){
 
     if(isLoading){
         console.log("loading")
-        return <div>Loading..</div>
+        return(
+            <Backdrop className={classes.backdrop} open={backdropStatus}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
+        )
     }
 
 
