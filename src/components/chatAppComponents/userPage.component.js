@@ -67,6 +67,7 @@ const useStyles = makeStyles(theme=>({
         minWidth:"100vw"
     },
     root: {
+        width: '85vw',
         //maxWidth:'85vw',
         margin: 'auto',
         background: theme.palette.common.black
@@ -97,7 +98,7 @@ const useStyles = makeStyles(theme=>({
     },
     appName:{
         fontWeight:'bold',
-        fontSize: '35px',
+        fontSize: '3vw',
         color: '#ffffff',
         //marginLeft:'20px'
     },
@@ -311,7 +312,7 @@ export default function UserPage(props){
             <Grid container spacing={0} component="main" className={classes.root}>
                 <CssBaseline/>
                 <Hidden xsDown>
-                <Grid item xs={false} sm={3} md={3} lg={2} xl={2} className={classes.gridOne}>
+                <Grid item xs={false} sm={3} md={2} lg={2} xl={2} className={classes.gridOne}>
                     <Container style={{margin:0,padding:0}}>
                         <div className={classes.paper}>
                             <div style={{minWidth:'100%', minHeight:'100%'}}>
@@ -359,6 +360,7 @@ export default function UserPage(props){
                                     </Collapse>
                                 </List>
                             </div>
+                            <Hidden mdUp>
                             <div style={{minWidth:'100%', minHeight:'100%', background:"#313b3c"}}>
                                 <List>
                                     <ListItem>
@@ -382,6 +384,8 @@ export default function UserPage(props){
                                     </ListItem>
                                 </List>
                             </div>
+                            </Hidden>
+
                             <div style={{minWidth:'100%', minHeight:'100%', background:"#313b3c"}}>
                                 <List>
                                     <ListItem button>
@@ -498,10 +502,10 @@ export default function UserPage(props){
                 </Grid>
                 </Hidden>
                
-                <Grid item xs={12} sm={9} md={7} lg={8} xl={8} className={classes.gridTwo}>
+                <Grid item xs={12} sm={9} md={7} lg={7} xl={7} className={classes.gridTwo}>
                     <Container style={{ margin:0,padding:0}}>
-                        <div style={{border:"1px solid blue",width:"100%", height:"300px", maxHeight:"300x"}}> 
-
+                        <div style={{border:"1px solid blue",width:"100%", height:"33vh", maxHeight:"33vh"}}> 
+                            
                         </div>
                         <div style={{border:"1px solid red",width:"100%", height:"100%", maxHeight:"100%"}}>
 
@@ -510,8 +514,32 @@ export default function UserPage(props){
                 </Grid>
                 
                 <Hidden smDown>
-                <Grid item xs={false} sm={false} md={2} lg={2} xl={2} className={classes.gridThree}>
-
+                <Grid item xs={false} sm={false} md={3} lg={3} xl={3} className={classes.gridThree}>
+                    <Container style={{margin:0,padding:0}}>
+                    <div style={{minWidth:'100%', minHeight:'100%', background:"#263031"}}>
+                                <List>
+                                    <ListItem>
+                                    <TextField
+                                        label="Search"
+                                        variant="standard"
+                                        className={classes.labelWhite}
+                                        InputProps={{
+                                            className:classes.inputColor,
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton
+                                                        edge="end"
+                                                    >
+                                                        <SearchIcon style={{fill:"white"}}/>
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                    />
+                                    </ListItem>
+                                </List>
+                            </div>
+                    </Container>
                 </Grid>
                 </Hidden>
             </Grid>
