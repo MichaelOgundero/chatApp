@@ -14,7 +14,7 @@ import SearchIcon from '@material-ui/icons/Search'
 import Box from '@material-ui/core/Box'
 import {deepOrange, deepPurple} from '@material-ui/core/colors'
 import Badge from '@material-ui/core/Badge';
-import { InputAdornment, Hidden, Backdrop } from '@material-ui/core'
+import { InputAdornment, Hidden, Backdrop, NativeSelect,FormControl } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import EmailIcon from '@material-ui/icons/Email'
 import PersonIcon from '@material-ui/icons/Person'
@@ -78,7 +78,7 @@ const useStyles = makeStyles(theme=>({
         //border: "1px solid black",
     },
     gridTwo:{
-        border: '1px solid yellow',
+        //border: '1px solid yellow',
     },
     gridThree:{
         border: '1px solid red',
@@ -174,6 +174,19 @@ const useStyles = makeStyles(theme=>({
     },
     rootDiv: {
         flexGrow: 1
+    },
+
+    rootHeader:{
+        display: "flex",
+        flexDirection:"row",
+        justifyContent:"flex-start",
+        height:"100%",
+        width:"100%"
+    },
+
+    profilePic:{
+        display:"flex",
+        flexDirection:"column",
     }
 
 
@@ -312,7 +325,7 @@ export default function UserPage(props){
             <Grid container spacing={0} component="main" className={classes.root}>
                 <CssBaseline/>
                 <Hidden xsDown>
-                <Grid item xs={false} sm={3} md={2} lg={2} xl={2} className={classes.gridOne}>
+                <Grid item xs={false} sm={3} md={3} lg={2} xl={2} className={classes.gridOne}>
                     <Container style={{margin:0,padding:0}}>
                         <div className={classes.paper}>
                             <div style={{minWidth:'100%', minHeight:'100%'}}>
@@ -502,12 +515,49 @@ export default function UserPage(props){
                 </Grid>
                 </Hidden>
                
-                <Grid item xs={12} sm={9} md={7} lg={7} xl={7} className={classes.gridTwo}>
+                <Grid item xs={12} sm={9} md={6} lg={7} xl={7} className={classes.gridTwo}>
                     <Container style={{ margin:0,padding:0}}>
-                        <div style={{border:"1px solid blue",width:"100%", height:"33vh", maxHeight:"33vh"}}> 
-                            
+                        <div style={{width:"100%", height:"33vh", maxHeight:"33vh"}}> 
+                            <Box className={classes.rootHeader} >
+                                <Box className={classes.profilePic} style={{width:"30%",height:"100%", border:"1px solid white"}}> 
+                                    <Box style={{ width:"100%", height:"80%", border:"1px solid yellow"}}>
+                                        
+                                    </Box>
+                                    <Box style={{ width:"100%", height:"20%", border:"3px solid green", background:"white"}}>
+                                        <Box m={0.75} display="flex" flexDirection="column" alignItems="center" style={{border:"1px solid red"}}>
+                                            <FormControl>
+                                                <NativeSelect defaultValue={1}
+                                                    inputProps={{
+                                                        startAdornment:(
+                                                            <InputAdornment position="start">
+                                                                <PersonIcon/>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                >
+                                                    <option value={1}>
+                                                        {"Online"}
+                                                    </option>
+                                                    <option value={2}>
+                                                        {"Away"}
+                                                    </option>
+                                                    <option value={3}>
+                                                        {"Do Not Disturb"}
+                                                    </option>
+                                                </NativeSelect>
+                                            </FormControl>
+                                        </Box>
+                                    </Box>
+                                </Box>
+                                <Box style={{width:"55%", height:"100%", border:"1px solid red"}}> 
+
+                                </Box>
+                                <Box style={{width:"15%", height:"100%", border:"1px solid green"}}>
+
+                                </Box>
+                            </Box>
                         </div>
-                        <div style={{border:"1px solid red",width:"100%", height:"100%", maxHeight:"100%"}}>
+                        <div style={{border:"1px solid white",width:"100%", height:"100%", maxHeight:"100%"}}>
 
                         </div>
                     </Container>
