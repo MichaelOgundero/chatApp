@@ -14,13 +14,13 @@ import SearchIcon from '@material-ui/icons/Search'
 import Box from '@material-ui/core/Box'
 import {deepOrange, deepPurple} from '@material-ui/core/colors'
 import Badge from '@material-ui/core/Badge';
-import { InputAdornment, Hidden, Backdrop, NativeSelect,FormControl } from '@material-ui/core'
+import { InputAdornment, Hidden, Backdrop, NativeSelect,FormControl,MenuItem,Select } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import EmailIcon from '@material-ui/icons/Email'
 import PersonIcon from '@material-ui/icons/Person'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import BlockIcon from '@material-ui/icons/Block'
-import {ExpandMore, ExpandLess, ExitToApp, MoreHoriz} from '@material-ui/icons'
+import {ExpandMore, ExpandLess, ExitToApp, MoreHoriz, FiberManualRecord} from '@material-ui/icons'
 import { useHistory } from 'react-router-dom'
 
 
@@ -133,6 +133,19 @@ const useStyles = makeStyles(theme=>({
         width:"100%"  
 
     },
+
+    selectStatus:{
+        '& .MuiSelect-icon':{
+            color:"#313b3c"
+        },
+        '&&&:before':{
+            borderBottom:"none"
+        },
+        '&&:after':{
+            borderBottom:"none"
+        }
+    },
+
     inputColor:{
         color:"white",
         borderBottom:"2px solid white"
@@ -200,6 +213,8 @@ export default function UserPage(props){
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [backdropStatus, setBackdropStatus] = useState(true);
+    
+    const [currentStatus, setCurrentStatus] = useState(1);
 
     useEffect(()=>{
         let unMounted = false;
@@ -258,6 +273,10 @@ export default function UserPage(props){
 
     const nameClick = () =>{
         setOpen(!open);
+    }
+
+    const handleCurrentStatusChange = e =>{
+        setCurrentStatus(e.target.value)
     }
 
     function formRow(){
@@ -520,31 +539,60 @@ export default function UserPage(props){
                         <div style={{width:"100%", height:"33vh", maxHeight:"33vh"}}> 
                             <Box className={classes.rootHeader} >
                                 <Box className={classes.profilePic} style={{width:"30%",height:"100%", border:"1px solid white"}}> 
-                                    <Box style={{ width:"100%", height:"80%", border:"1px solid yellow"}}>
+                                    <Box style={{ width:"100%", height:"90%", border:"1px solid yellow"}}>
                                         
                                     </Box>
-                                    <Box style={{ width:"100%", height:"20%", border:"3px solid green", background:"white"}}>
-                                        <Box m={0.75} display="flex" flexDirection="column" alignItems="center" style={{border:"1px solid red"}}>
+                                    <Box style={{ width:"100%", height:"10%", border:"1px solid green", background:"white"}}>
+                                        <Box display="flex" flexDirection="column" alignItems="center">
                                             <FormControl>
-                                                <NativeSelect defaultValue={1}
-                                                    inputProps={{
-                                                        startAdornment:(
-                                                            <InputAdornment position="start">
-                                                                <PersonIcon/>
-                                                            </InputAdornment>
-                                                        )
-                                                    }}
+                                                <Select
+                                                    value={currentStatus}
+                                                    onChange={handleCurrentStatusChange}
+                                                    className={classes.selectStatus}
                                                 >
-                                                    <option value={1}>
-                                                        {"Online"}
-                                                    </option>
-                                                    <option value={2}>
-                                                        {"Away"}
-                                                    </option>
-                                                    <option value={3}>
-                                                        {"Do Not Disturb"}
-                                                    </option>
-                                                </NativeSelect>
+                                                    <MenuItem value={1}>
+                                                        <div style={{width:"100%"}}>
+                                                            <Box display="flex" flexDirection="row" alignItems="center">
+                                                                <Box pr={1}>
+                                                                    <FiberManualRecord style={{fill:"#00cc00", width:"11px",height:"11px"}}/>
+                                                                </Box>
+                                                                <Box>
+                                                                    <Typography variant="h5" style={{fontSize:"13px",}}>
+                                                                        {"Online"}
+                                                                    </Typography>
+                                                                </Box>
+                                                            </Box>
+                                                        </div>
+                                                    </MenuItem>
+                                                    <MenuItem value={2}>
+                                                    <div style={{width:"100%"}}>
+                                                            <Box display="flex" flexDirection="row" alignItems="center">
+                                                                <Box pr={1}>
+                                                                    <FiberManualRecord style={{fill:"#ff0000", width:"11px",height:"11px"}}/>
+                                                                </Box>
+                                                                <Box>
+                                                                    <Typography variant="h5" style={{fontSize:"13px",}}>
+                                                                        {"Away"}
+                                                                    </Typography>
+                                                                </Box>
+                                                            </Box>
+                                                        </div>
+                                                    </MenuItem>
+                                                    <MenuItem value={3}>
+                                                    <div style={{width:"100%"}}>
+                                                            <Box display="flex" flexDirection="row" alignItems="center">
+                                                                <Box pr={1}>
+                                                                    <FiberManualRecord style={{fill:"#ffcc00", width:"11px",height:"11px"}}/>
+                                                                </Box>
+                                                                <Box>
+                                                                    <Typography variant="h5" style={{fontSize:"13px",}}>
+                                                                        {"Do Not Disturb"}
+                                                                    </Typography>
+                                                                </Box>
+                                                            </Box>
+                                                        </div>
+                                                    </MenuItem>
+                                                </Select>
                                             </FormControl>
                                         </Box>
                                     </Box>
