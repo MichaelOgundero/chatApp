@@ -23,6 +23,8 @@ import BlockIcon from '@material-ui/icons/Block'
 import {ExpandMore, ExpandLess, ExitToApp, MoreHoriz, FiberManualRecord} from '@material-ui/icons'
 import { useHistory } from 'react-router-dom'
 
+import profilePic from "../../assets/profileImage.jpg"
+
 
 
 const StyledBadge = withStyles(theme => ({
@@ -538,17 +540,20 @@ export default function UserPage(props){
                     <Container style={{ margin:0,padding:0}}>
                         <div style={{width:"100%", height:"33vh", maxHeight:"33vh"}}> 
                             <Box className={classes.rootHeader} >
-                                <Box className={classes.profilePic} style={{width:"30%",height:"100%", border:"1px solid white"}}> 
-                                    <Box style={{ width:"100%", height:"90%", border:"1px solid yellow"}}>
-                                        
+                                <Box className={classes.profilePic} style={{width:"30%",height:"100%", background:"white"}}> 
+                                    <Box display="flex" alignItems="center"  style={{ width:"100%", height:"90%"}}>
+                                        <div style={{width:"90%", height:"90%", margin:"0 auto"}}>
+                                            <Avatar alt="profile Image" src={profilePic} style={{width:"100%", height:"100%"}}/>
+                                        </div>
                                     </Box>
-                                    <Box style={{ width:"100%", height:"10%", border:"1px solid green", background:"white"}}>
+                                    <Box style={{ width:"100%", height:"10%", background:"white"}}>
                                         <Box display="flex" flexDirection="column" alignItems="center">
                                             <FormControl>
                                                 <Select
                                                     value={currentStatus}
                                                     onChange={handleCurrentStatusChange}
                                                     className={classes.selectStatus}
+                                                    
                                                 >
                                                     <MenuItem value={1}>
                                                         <div style={{width:"100%"}}>
@@ -597,10 +602,10 @@ export default function UserPage(props){
                                         </Box>
                                     </Box>
                                 </Box>
-                                <Box style={{width:"55%", height:"100%", border:"1px solid red"}}> 
+                                <Box style={{width:"55%", height:"100%", border:"1px solid red",background:"white"}}> 
 
                                 </Box>
-                                <Box style={{width:"15%", height:"100%", border:"1px solid green"}}>
+                                <Box style={{width:"15%", height:"100%", border:"1px solid green",background:"white"}}>
 
                                 </Box>
                             </Box>
