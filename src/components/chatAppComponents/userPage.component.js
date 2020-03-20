@@ -14,13 +14,14 @@ import SearchIcon from '@material-ui/icons/Search'
 import Box from '@material-ui/core/Box'
 import {deepOrange, deepPurple} from '@material-ui/core/colors'
 import Badge from '@material-ui/core/Badge';
-import { InputAdornment, Hidden, Backdrop, NativeSelect,FormControl,MenuItem,Select } from '@material-ui/core'
+import { InputAdornment, Hidden, Backdrop, NativeSelect,FormControl,MenuItem,Select,Button } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import EmailIcon from '@material-ui/icons/Email'
 import PersonIcon from '@material-ui/icons/Person'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import BlockIcon from '@material-ui/icons/Block'
-import {ExpandMore, ExpandLess, ExitToApp, MoreHoriz, FiberManualRecord} from '@material-ui/icons'
+import {ExpandMore, ExpandLess, ExitToApp, MoreHoriz, 
+        FiberManualRecord, Cake, LocationOn, Wc, Event} from '@material-ui/icons'
 import { useHistory } from 'react-router-dom'
 
 import profilePic from "../../assets/profileImage.jpg"
@@ -76,11 +77,13 @@ const useStyles = makeStyles(theme=>({
     },
     gridOne:{
         //background: '#ff1100',
-        background:'linear-gradient(45deg, #aa076b 30%, #61045f 90%)',
+        background:'linear-gradient(45deg, #02aab0 30%, #00cdac 90%)',
+
         //border: "1px solid black",
     },
     gridTwo:{
         //border: '1px solid yellow',
+        background:"black"
     },
     gridThree:{
         border: '1px solid red',
@@ -135,7 +138,18 @@ const useStyles = makeStyles(theme=>({
         width:"100%"  
 
     },
+    editProfile:{
+        margin: theme.spacing(3,0,2),//top right bottom left
 
+        background: 'linear-gradient(45deg, #02aab0 30%, #00cdac 90%)',//green beach
+        border: 0,
+        borderRadius: 20,
+        "&:hover":{
+            boxShadow: '0 3px 5px 2px rgba(2, 170, 176, .3)',
+        },
+        
+        color: 'white',
+    },
     selectStatus:{
         '& .MuiSelect-icon':{
             color:"#313b3c"
@@ -368,12 +382,12 @@ export default function UserPage(props){
                                             }}
                                             variant="dot"
                                             >
-                                                <Avatar className={classes.orange}>M</Avatar>
+                                                <Avatar src={profilePic}></Avatar>
                                             </StyledBadge>
                                         </ListItemAvatar>
                                         <ListItemText primary={
                                             <Typography variant='h5' className={classes.userName}>
-                                                {"Michael"}
+                                                {"Susan"}
                                             </Typography>
                                         } />
                                         {open ? <ExpandLess style={{fill:"white"}}/> : <ExpandMore style={{fill:"white"}}/>}
@@ -537,23 +551,22 @@ export default function UserPage(props){
                 </Hidden>
                
                 <Grid item xs={12} sm={9} md={6} lg={7} xl={7} className={classes.gridTwo}>
-                    <Container style={{ margin:0,padding:0}}>
+                    <Container style={{ margin:0,padding:0, background:"white"}}>
                         <div style={{width:"100%", height:"33vh", maxHeight:"33vh"}}> 
                             <Box className={classes.rootHeader} >
-                                <Box className={classes.profilePic} style={{width:"30%",height:"100%", background:"white"}}> 
+                                <Box className={classes.profilePic} style={{width:"30%",height:"100%",}}> 
                                     <Box display="flex" alignItems="center"  style={{ width:"100%", height:"90%"}}>
-                                        <div style={{width:"90%", height:"90%", margin:"0 auto"}}>
+                                        <div style={{width:"85%", height:"85%", margin:"0 auto"}}>
                                             <Avatar alt="profile Image" src={profilePic} style={{width:"100%", height:"100%"}}/>
                                         </div>
                                     </Box>
-                                    <Box style={{ width:"100%", height:"10%", background:"white"}}>
+                                    <Box style={{ width:"100%", height:"10%",}}>
                                         <Box display="flex" flexDirection="column" alignItems="center">
                                             <FormControl>
                                                 <Select
                                                     value={currentStatus}
                                                     onChange={handleCurrentStatusChange}
                                                     className={classes.selectStatus}
-                                                    
                                                 >
                                                     <MenuItem value={1}>
                                                         <div style={{width:"100%"}}>
@@ -602,11 +615,137 @@ export default function UserPage(props){
                                         </Box>
                                     </Box>
                                 </Box>
-                                <Box style={{width:"55%", height:"100%", border:"1px solid red",background:"white"}}> 
-
+                                <Box display="flex" flexDirection="column" style={{width:"55%", height:"100%",}}> 
+                                    <Box mt={1} ml={1} mr={1} mb={0} pt={1} pl={1} pr={1} pb={0}>
+                                        <Typography component="div">
+                                            <Box
+                                                fontWeight="fontWeightBold"
+                                                fontSize="2vw"
+                                                style={{wordWrap:"break-word"}}
+                                            >
+                                                {"Susan Andrews"}
+                                            </Box>
+                                        </Typography>
+                                    </Box>
+                                    <Box ml={1} mr={1} mt={0} pt={0} pl={1} pr={1}>
+                                        <Typography component="div">
+                                            <Box
+                                                fontWeight="fontWeightLight"
+                                                fontSize="1vw"
+                                                style={{color:"#696969", wordWrap:"break-word"}}
+                                            >
+                                                {"@youngTickles"}
+                                            </Box>
+                                        </Typography>
+                                    </Box>
+                                    <Box ml={1} mr={1} mt={1} pt={1} pl={1} pr={1}>
+                                        <Typography component="div">
+                                            <Box
+                                                fontWeight="fontWeightLight"
+                                                fontSize="1vw"
+                                                style={{color:"#000000", wordWrap:"break-word"}}
+                                                p={0} m={0}
+                                            >
+                                                {"This is my status and my status is what my status is"}
+                                            </Box>
+                                        </Typography>
+                                    </Box>
+                                    <Box ml={1} mr={1} mt={1} pt={1} pl={1} pr={1}>
+                                        <div style={{width:"100%", }} >
+                                            <Box display="flex" flexDirection="row" style={{margin:"0 !important", padding:"0 !important"}}>
+                                                <Box style={{margin:0, padding:0}}>
+                                                    <Cake style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
+                                                </Box>
+                                                <Typography>
+                                                    <Box
+                                                        fontWeight="fontWeightLight"
+                                                        fontSize="1vw"
+                                                        style={{color:"#696969", marginTop:"4px", marginLeft:"2px", marginRight:"8px"}}
+                                                    >
+                                                        {"12/05/1996"}
+                                                    </Box>
+                                                </Typography>
+                                                <Box style={{margin:0, padding:0}}>
+                                                    <LocationOn style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
+                                                </Box>
+                                                <Typography>
+                                                    <Box
+                                                        fontWeight="fontWeightLight"
+                                                        fontSize="1vw"
+                                                        style={{color:"#696969", marginTop:"4px", marginLeft:"2px"}}
+                                                    >
+                                                        {"Amsterdam, Netherlands"}
+                                                    </Box>
+                                                </Typography>
+                                            </Box>
+                                        </div>
+                                    </Box>
+                                    <Box ml={1} mr={1} mt={0} pt={0} pl={1} pr={1}>
+                                        <div style={{width:"100%",}} >
+                                            <Box display="flex" flexDirection="row" style={{margin:"0 !important", padding:"0 !important"}}>
+                                                <Box style={{margin:0, padding:0}}>
+                                                    <Wc style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
+                                                </Box>
+                                                <Typography>
+                                                    <Box
+                                                        fontWeight="fontWeightLight"
+                                                        fontSize="1vw"
+                                                        style={{color:"#696969", marginTop:"4px", marginLeft:"2px", marginRight:"35px"}}
+                                                    >
+                                                        {"Female"}
+                                                    </Box>
+                                                </Typography>
+                                                <Box style={{margin:0, padding:0}}>
+                                                    <Event style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
+                                                </Box>
+                                                <Typography>
+                                                    <Box
+                                                        fontWeight="fontWeightLight"
+                                                        fontSize="1vw"
+                                                        style={{color:"#696969", marginTop:"4px", marginLeft:"2px"}}
+                                                    >
+                                                        {"Joined March 2020"}
+                                                    </Box>
+                                                </Typography>
+                                            </Box>
+                                        </div>
+                                    </Box>
+                                    <Box ml={1} mr={1} mt={1} pt={1} pl={1} pr={1}>
+                                        <div style={{width:"100%", }} >
+                                            <Typography>
+                                                <Box 
+                                                    display="inline"
+                                                    fontWeight="fontWeightBold" fontSize="1vw"
+                                                    style={{color:"#000000", marginRight:"2px"}}
+                                                >
+                                                    {"248"}
+                                                </Box>
+                                                <Box 
+                                                    display="inline" 
+                                                    fontSize="1vw"
+                                                    style={{color:"#696969"}}
+                                                >
+                                                    {"Friends"}
+                                                </Box>
+                                            </Typography>
+                                        </div>
+                                    </Box>
                                 </Box>
-                                <Box style={{width:"15%", height:"100%", border:"1px solid green",background:"white"}}>
-
+                                <Box display="flex" flexDirection="column" style={{width:"15%", height:"100%",}}>
+                                    <Box m={0} p={0}>
+                                        <Button
+                                            className={classes.editProfile}
+                                        >
+                                            <Typography>
+                                                <Box
+                                                    fontSize="0.78vw"
+                                                    fontWeight="fontWeightBold"
+                                                >
+                                                    {"Edit profile"}
+                                                </Box>
+                                            </Typography>
+                                        </Button>
+                                    </Box>
                                 </Box>
                             </Box>
                         </div>
