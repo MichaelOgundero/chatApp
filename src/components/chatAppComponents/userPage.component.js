@@ -647,11 +647,17 @@ export default function UserPage(props){
                                                     <MenuItem value={1}>
                                                         <div style={{width:"100%"}}>
                                                             <Box display="flex" flexDirection="row" alignItems="center">
-                                                                <Box pr={1}>
+                                                                <Box pr={1} style={{ paddingTop:"1px"}}>
                                                                     <FiberManualRecord style={{fill:"#00cc00", width:"11px",height:"11px"}}/>
                                                                 </Box>
-                                                                <Box>
-                                                                    <Typography variant="h5" style={{fontSize:"13px",}}>
+                                                                <Box style={{paddingBottom:"2px"}}>
+                                                                    <Typography 
+                                                                        variant="h5" 
+                                                                        style={{fontSize:"13px",
+                                                                                fontFamily:'Segoe UI Symbol',
+                                                                                
+                                                                        }}
+                                                                    >
                                                                         {"Online"}
                                                                     </Typography>
                                                                 </Box>
@@ -661,11 +667,11 @@ export default function UserPage(props){
                                                     <MenuItem value={2}>
                                                     <div style={{width:"100%"}}>
                                                             <Box display="flex" flexDirection="row" alignItems="center">
-                                                                <Box pr={1}>
+                                                                <Box pr={1}  style={{ paddingTop:"1px"}}>
                                                                     <FiberManualRecord style={{fill:"#ff0000", width:"11px",height:"11px"}}/>
                                                                 </Box>
-                                                                <Box>
-                                                                    <Typography variant="h5" style={{fontSize:"13px",}}>
+                                                                <Box style={{paddingBottom:"2px"}}>
+                                                                    <Typography variant="h5" style={{fontSize:"13px",fontFamily:'Segoe UI Symbol'}}>
                                                                         {"Away"}
                                                                     </Typography>
                                                                 </Box>
@@ -675,11 +681,11 @@ export default function UserPage(props){
                                                     <MenuItem value={3}>
                                                     <div style={{width:"100%"}}>
                                                             <Box display="flex" flexDirection="row" alignItems="center">
-                                                                <Box pr={1}>
+                                                                <Box pr={1}  style={{ paddingTop:"1px"}}>
                                                                     <FiberManualRecord style={{fill:"#ffcc00", width:"11px",height:"11px"}}/>
                                                                 </Box>
-                                                                <Box>
-                                                                    <Typography variant="h5" style={{fontSize:"13px",}}>
+                                                                <Box style={{paddingBottom:"2px"}}>
+                                                                    <Typography variant="h5" style={{fontSize:"13px",fontFamily:'Segoe UI Symbol'}}>
                                                                         {"Do Not Disturb"}
                                                                     </Typography>
                                                                 </Box>
@@ -698,6 +704,7 @@ export default function UserPage(props){
                                                 fontWeight="fontWeightBold"
                                                 fontSize="2vw"
                                                 style={{wordWrap:"break-word"}}
+                                                fontFamily='Segoe UI Symbol'
                                             >
                                                 {"Susan Andrews"}
                                             </Box>
@@ -709,6 +716,7 @@ export default function UserPage(props){
                                                 fontWeight="fontWeightLight"
                                                 fontSize="1vw"
                                                 style={{color:"#696969", wordWrap:"break-word"}}
+                                                fontFamily='Segoe UI Symbol'
                                             >
                                                 {"@youngTickles"}
                                             </Box>
@@ -719,8 +727,9 @@ export default function UserPage(props){
                                             <Box
                                                 fontWeight="fontWeightLight"
                                                 fontSize="1vw"
-                                                style={{color:"#000000", wordWrap:"break-word", }}
+                                                style={{color:"#000000", wordWrap:"break-word",}}
                                                 p={0} m={0}
+                                                fontFamily='Segoe UI Symbol'
                                             >
                                                 {"This is my status and my status is what my status is This is my status and my status is what my status is"}
                                             </Box>
@@ -736,7 +745,8 @@ export default function UserPage(props){
                                                     <Box
                                                         fontWeight="fontWeightLight"
                                                         fontSize="0.8vw"
-                                                        style={{color:"#696969", marginTop:"4px", marginLeft:"2px", marginRight:"8px"}}
+                                                        style={{color:"#696969", marginTop:"3px", marginLeft:"2px", marginRight:"8px"}}
+                                                        fontFamily='Segoe UI Symbol'
                                                     >
                                                         {"May 12, 1996"}
                                                     </Box>
@@ -748,7 +758,8 @@ export default function UserPage(props){
                                                     <Box
                                                         fontWeight="fontWeightLight"
                                                         fontSize="0.8vw"
-                                                        style={{color:"#696969", marginTop:"4px", marginLeft:"2px"}}
+                                                        style={{color:"#696969", marginTop:"3px", marginLeft:"2px"}}
+                                                        fontFamily='Segoe UI Symbol'
                                                     >
                                                         {"Amsterdam, Netherlands"}
                                                     </Box>
@@ -766,7 +777,8 @@ export default function UserPage(props){
                                                     <Box
                                                         fontWeight="fontWeightLight"
                                                         fontSize="0.8vw"
-                                                        style={{color:"#696969", marginTop:"4px", marginLeft:"2px", marginRight:"42px"}}
+                                                        style={{color:"#696969", marginTop:"3px", marginLeft:"2px", marginRight:"42px"}}
+                                                        fontFamily='Segoe UI Symbol'
                                                     >
                                                         {"Female"}
                                                     </Box>
@@ -778,7 +790,8 @@ export default function UserPage(props){
                                                     <Box
                                                         fontWeight="fontWeightLight"
                                                         fontSize="0.8vw"
-                                                        style={{color:"#696969", marginTop:"4px", marginLeft:"2px"}}
+                                                        style={{color:"#696969", marginTop:"3px", marginLeft:"2px"}}
+                                                        fontFamily='Segoe UI Symbol'
                                                     >
                                                         {"Joined March 2020"}
                                                     </Box>
@@ -793,6 +806,7 @@ export default function UserPage(props){
                                                     display="inline"
                                                     fontWeight="fontWeightBold" fontSize="1vw"
                                                     style={{color:"#000000", marginRight:"3px"}}
+                                                    fontFamily='Segoe UI Symbol'
                                                 >
                                                     {"248"}
                                                 </Box>
@@ -800,6 +814,7 @@ export default function UserPage(props){
                                                     display="inline" 
                                                     fontSize="1vw"
                                                     style={{color:"#696969"}}
+                                                    fontFamily='Segoe UI Symbol'
                                                 >
                                                     {"Friends"}
                                                 </Box>
@@ -816,6 +831,7 @@ export default function UserPage(props){
                                                 <Box
                                                     fontSize="0.78vw"
                                                     fontWeight="fontWeightBold"
+                                                    fontFamily='Segoe UI Symbol'
                                                 >
                                                     {"Edit profile"}
                                                 </Box>
@@ -832,7 +848,11 @@ export default function UserPage(props){
                                 <AntTab label="Friends" {...a11yProps(2)}/>
                             </AntTabs>
                             <TabPanel value={currentTab} index={0}>
-                                Item One
+                                <Typography>
+                                    <Box fontFamily='Segoe UI Symbol'>
+                                        About
+                                    </Box>
+                                </Typography>
                             </TabPanel>
                             <TabPanel value={currentTab} index={1}>
                                 Item Two
