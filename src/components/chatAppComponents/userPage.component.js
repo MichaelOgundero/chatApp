@@ -4,7 +4,7 @@ import axios from 'axios';
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 
-
+import PropTypes from 'prop-types'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
 import { TextField, Typography, List, ListItem,ListItemSecondaryAction,
@@ -23,10 +23,80 @@ import BlockIcon from '@material-ui/icons/Block'
 import {ExpandMore, ExpandLess, ExitToApp, MoreHoriz, 
         FiberManualRecord, Cake, LocationOn, Wc, Event} from '@material-ui/icons'
 import { useHistory } from 'react-router-dom'
+import {Tab, Tabs} from '@material-ui/core'
 
 import profilePic from "../../assets/profileImage.jpg"
 
+function TabPanel(props){
+    const {children, value, index, ...other} = props;
 
+    return(
+        <Typography
+            component="div"
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && <Box p={3}>{children}</Box>}
+        </Typography>
+    )
+}
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index){
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`
+    }
+}
+
+const AntTabs = withStyles({
+    root: {
+        borderBottom: '1px solid #e8e8e8',
+    },
+    indicator: {
+        backgroundColor: "#02aab0"
+    }
+})(Tabs);
+
+const AntTab = withStyles(theme=>({
+    root: {
+        textTransform: 'none',
+        minWidth: 72,
+        fontWeight: theme.typography.fontWeightRegular,
+        marginRight: theme.spacing(4),
+        fontFamily:[
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+        ].join(','),
+        '&: hover': {
+            color: "#00cdac",
+            opacity: 1
+        },
+        '&$selected':{
+            color: '#02aab0',
+            fontWeight: theme.typography.fontWeightMedium
+        },
+        '&:focus':{
+            color: "#00cdac"
+        },
+    },
+    selected: {},
+}))(props=> <Tab disableRipple {...props}/>)
 
 const StyledBadge = withStyles(theme => ({
     badge: {
@@ -159,7 +229,8 @@ const useStyles = makeStyles(theme=>({
         },
         '&&:after':{
             borderBottom:"none"
-        }
+        },
+
     },
 
     inputColor:{
@@ -231,6 +302,7 @@ export default function UserPage(props){
     const [backdropStatus, setBackdropStatus] = useState(true);
     
     const [currentStatus, setCurrentStatus] = useState(1);
+    const [currentTab, setCurrentTab] = useState(1);
 
     useEffect(()=>{
         let unMounted = false;
@@ -293,6 +365,10 @@ export default function UserPage(props){
 
     const handleCurrentStatusChange = e =>{
         setCurrentStatus(e.target.value)
+    }
+
+    const handleCurrentTabChange = (event, newValue) => {
+        setCurrentTab(newValue);
     }
 
     function formRow(){
@@ -643,14 +719,14 @@ export default function UserPage(props){
                                             <Box
                                                 fontWeight="fontWeightLight"
                                                 fontSize="1vw"
-                                                style={{color:"#000000", wordWrap:"break-word"}}
+                                                style={{color:"#000000", wordWrap:"break-word", }}
                                                 p={0} m={0}
                                             >
-                                                {"This is my status and my status is what my status is"}
+                                                {"This is my status and my status is what my status is This is my status and my status is what my status is"}
                                             </Box>
                                         </Typography>
                                     </Box>
-                                    <Box ml={1} mr={1} mt={1} pt={1} pl={1} pr={1}>
+                                    <Box ml={1} mr={1} mt={1} pt={0} pl={1} pr={1}>
                                         <div style={{width:"100%", }} >
                                             <Box display="flex" flexDirection="row" style={{margin:"0 !important", padding:"0 !important"}}>
                                                 <Box style={{margin:0, padding:0}}>
@@ -710,13 +786,13 @@ export default function UserPage(props){
                                             </Box>
                                         </div>
                                     </Box>
-                                    <Box ml={1} mr={1} mt={1} pt={1} pl={1} pr={1}>
+                                    <Box ml={1} mr={1} mt={0} pt={1} pl={1} pr={1}>
                                         <div style={{width:"100%", }} >
                                             <Typography>
                                                 <Box 
                                                     display="inline"
                                                     fontWeight="fontWeightBold" fontSize="1vw"
-                                                    style={{color:"#000000", marginRight:"2px"}}
+                                                    style={{color:"#000000", marginRight:"3px"}}
                                                 >
                                                     {"248"}
                                                 </Box>
@@ -750,7 +826,20 @@ export default function UserPage(props){
                             </Box>
                         </div>
                         <div style={{border:"1px solid white",width:"100%", height:"100%", maxHeight:"100%"}}>
-
+                            <AntTabs value={currentTab} onChange={handleCurrentTabChange}>
+                                <AntTab label="About" {...a11yProps(0)}/>
+                                <AntTab label ="Photos" {...a11yProps(1)}/>
+                                <AntTab label="Friends" {...a11yProps(2)}/>
+                            </AntTabs>
+                            <TabPanel value={currentTab} index={0}>
+                                Item One
+                            </TabPanel>
+                            <TabPanel value={currentTab} index={1}>
+                                Item Two
+                            </TabPanel>
+                            <TabPanel value={currentTab} index={2}>
+                                Item Three
+                            </TabPanel>
                         </div>
                     </Container>
                 </Grid>
