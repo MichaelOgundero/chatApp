@@ -152,7 +152,7 @@ const useStyles = makeStyles(theme=>({
     },
     selectStatus:{
         '& .MuiSelect-icon':{
-            color:"#313b3c"
+            color:"#000000"
         },
         '&&&:before':{
             borderBottom:"none"
@@ -560,7 +560,7 @@ export default function UserPage(props){
                                             <Avatar alt="profile Image" src={profilePic} style={{width:"100%", height:"100%"}}/>
                                         </div>
                                     </Box>
-                                    <Box style={{ width:"100%", height:"10%",}}>
+                                    <Box style={{ width:"100%", height:"15%",}}>
                                         <Box display="flex" flexDirection="column" alignItems="center">
                                             <FormControl>
                                                 <Select
@@ -654,24 +654,24 @@ export default function UserPage(props){
                                         <div style={{width:"100%", }} >
                                             <Box display="flex" flexDirection="row" style={{margin:"0 !important", padding:"0 !important"}}>
                                                 <Box style={{margin:0, padding:0}}>
-                                                    <Cake style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
+                                                    <Cake fontSize="small" style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
                                                 </Box>
                                                 <Typography>
                                                     <Box
                                                         fontWeight="fontWeightLight"
-                                                        fontSize="1vw"
+                                                        fontSize="0.8vw"
                                                         style={{color:"#696969", marginTop:"4px", marginLeft:"2px", marginRight:"8px"}}
                                                     >
-                                                        {"12/05/1996"}
+                                                        {"May 12, 1996"}
                                                     </Box>
                                                 </Typography>
                                                 <Box style={{margin:0, padding:0}}>
-                                                    <LocationOn style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
+                                                    <LocationOn fontSize="small" style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
                                                 </Box>
                                                 <Typography>
                                                     <Box
                                                         fontWeight="fontWeightLight"
-                                                        fontSize="1vw"
+                                                        fontSize="0.8vw"
                                                         style={{color:"#696969", marginTop:"4px", marginLeft:"2px"}}
                                                     >
                                                         {"Amsterdam, Netherlands"}
@@ -684,24 +684,24 @@ export default function UserPage(props){
                                         <div style={{width:"100%",}} >
                                             <Box display="flex" flexDirection="row" style={{margin:"0 !important", padding:"0 !important"}}>
                                                 <Box style={{margin:0, padding:0}}>
-                                                    <Wc style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
+                                                    <Wc fontSize="small" style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
                                                 </Box>
                                                 <Typography>
                                                     <Box
                                                         fontWeight="fontWeightLight"
-                                                        fontSize="1vw"
-                                                        style={{color:"#696969", marginTop:"4px", marginLeft:"2px", marginRight:"35px"}}
+                                                        fontSize="0.8vw"
+                                                        style={{color:"#696969", marginTop:"4px", marginLeft:"2px", marginRight:"42px"}}
                                                     >
                                                         {"Female"}
                                                     </Box>
                                                 </Typography>
                                                 <Box style={{margin:0, padding:0}}>
-                                                    <Event style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
+                                                    <Event fontSize="small" style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
                                                 </Box>
                                                 <Typography>
                                                     <Box
                                                         fontWeight="fontWeightLight"
-                                                        fontSize="1vw"
+                                                        fontSize="0.8vw"
                                                         style={{color:"#696969", marginTop:"4px", marginLeft:"2px"}}
                                                     >
                                                         {"Joined March 2020"}
