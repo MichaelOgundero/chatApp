@@ -245,7 +245,7 @@ const useStyles = makeStyles(theme=>({
     secondaryAction:{
         width: theme.spacing(3),
         height: theme.spacing(2),
-        backgroundColor: theme.palette.divider
+        backgroundColor: theme.palette.divider,
     },
     secondaryActionNumber:{
         color: "white",
@@ -253,21 +253,15 @@ const useStyles = makeStyles(theme=>({
         fontSize:"8px"
     },
     handle:{
-        //paddingTop:"0px",
-        //paddingBottom:"0px",
         margin:0,
         padding:0,
-        //paddingLeft:"32px",
         fontWeight:"bold", 
         fontSize:"10px", 
         color:"white"
     },
     fullname:{
-        //paddingTop:"0px",
-        //paddingBottom:"0px",
         margin:'0 !important',
         padding:'0 !important',
-        //paddingLeft:"32px",
         fontWeight:"bold", 
         fontSize:"15", 
         color:"white"
@@ -523,7 +517,7 @@ export default function UserPage(props){
                                         } />
                                         <ListItemSecondaryAction>
                                             <IconButton edge="end">
-                                                <Avatar variant="square" className={classes.secondaryAction}>
+                                                <Avatar variant="square" className={classes.secondaryAction} style={{backgroundColor:"#00cdac"}}>
                                                     <Typography variant='h5' className={classes.contentText}>
                                                         {"12"}
                                                     </Typography> 
