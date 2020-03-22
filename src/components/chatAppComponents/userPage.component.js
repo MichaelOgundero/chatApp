@@ -21,9 +21,10 @@ import PersonIcon from '@material-ui/icons/Person'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import BlockIcon from '@material-ui/icons/Block'
 import {ExpandMore, ExpandLess, ExitToApp, MoreHoriz, 
-        FiberManualRecord, Cake, LocationOn, Wc, Event} from '@material-ui/icons'
+        FiberManualRecord, Cake, LocationOn, Wc, Event, Close} from '@material-ui/icons'
 import { useHistory } from 'react-router-dom'
 import {Tab, Tabs} from '@material-ui/core'
+import {Fade, Modal, Divider} from '@material-ui/core'
 
 import profilePic from "../../assets/profileImage.jpg"
 
@@ -230,7 +231,9 @@ const useStyles = makeStyles(theme=>({
         '&&:after':{
             borderBottom:"none"
         },
-
+        '&.Mui-selected':{
+            outline: 'none'
+        }
     },
 
     inputColor:{
@@ -281,8 +284,23 @@ const useStyles = makeStyles(theme=>({
     profilePic:{
         display:"flex",
         flexDirection:"column",
-    }
+    },
 
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        outline: 'transparent'
+    },
+    modalPaper: {
+        backgroundColor: theme.palette.background.paper,
+        //border:"3px solid white",
+        width:"35vw",
+        height:"80vh",
+        maxHeight:"80vh",
+        maxWidth:"35vw",
+        padding: theme.spacing(2,2,2,2)
+    }
 
 }))
 
@@ -296,7 +314,9 @@ export default function UserPage(props){
     const [backdropStatus, setBackdropStatus] = useState(true);
     
     const [currentStatus, setCurrentStatus] = useState(1);
-    const [currentTab, setCurrentTab] = useState(1);
+    const [currentTab, setCurrentTab] = useState(0);
+
+    const [modalStatus, setModalStatus] = useState(false);
 
     useEffect(()=>{
         let unMounted = false;
@@ -324,25 +344,6 @@ export default function UserPage(props){
 
     },[])//useeffect will only be called when userdata changes
 
-   /* const loadUserData = () =>{
-
-        setIsLoading(true);
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('usertoken')}`
-            },
-            
-        }
-        axios.get(`http://localhost:5000/user/user_info/${props.match.params.user}`, config)
-             .then(res=>{
-                setUserData(userData.push(res.data))
-                setIsLoading(false)
-                console.log(userData)
-             })
-             .catch(err=>console.log(err))
-    }*/
-
     const onLogout = (e) =>{
         e.preventDefault();
         axios.post('http://localhost:5000/authentication/logout')
@@ -363,6 +364,18 @@ export default function UserPage(props){
 
     const handleCurrentTabChange = (event, newValue) => {
         setCurrentTab(newValue);
+    }
+
+    const handleModalOpen = () => {
+        setModalStatus(true);
+    }
+
+    const handleModalClose = () => {
+        setModalStatus(false);
+    }
+
+    const handleModalSave = () => {
+        setModalStatus(false)
     }
 
     function formRow(){
@@ -625,9 +638,9 @@ export default function UserPage(props){
                         <div style={{width:"100%", height:"33vh", maxHeight:"33vh"}}> 
                             <Box className={classes.rootHeader} >
                                 <Box className={classes.profilePic} style={{width:"30%",height:"100%",}}> 
-                                    <Box display="flex" alignItems="center"  style={{ width:"100%", height:"90%"}}>
+                                    <Box display="flex" alignItems="center"  style={{ width:"100%", height:"100%"}}>
                                         <div style={{width:"85%", height:"85%", margin:"0 auto"}}>
-                                            <Avatar alt="profile Image" src={profilePic} style={{width:"100%", height:"100%"}}/>
+                                            <Avatar alt="profile Image" src={profilePic} style={{width:"12.5vw", height:"12.5vw", maxWidth:"200px", maxHeight:"200px"}}/>
                                         </div>
                                     </Box>
                                     <Box style={{ width:"100%", height:"15%",}}>
@@ -794,7 +807,7 @@ export default function UserPage(props){
                                         </div>
                                     </Box>
                                     <Box ml={1} mr={1} mt={0} pt={1} pl={1} pr={1}>
-                                        <div style={{width:"100%", }} >
+                                        <div style={{width:"100%", marginTop:"2px"}} >
                                             <Typography>
                                                 <Box 
                                                     display="inline"
@@ -820,6 +833,7 @@ export default function UserPage(props){
                                     <Box m={0} p={0}>
                                         <Button
                                             className={classes.editProfile}
+                                            onClick={handleModalOpen}
                                         >
                                             <Typography>
                                                 <Box
@@ -831,6 +845,96 @@ export default function UserPage(props){
                                                 </Box>
                                             </Typography>
                                         </Button>
+
+                                        <Modal
+                                            className={classes.modal}
+                                            open={modalStatus}
+                                            onClose={handleModalClose}
+                                            closeAfterTransition
+                                            BackdropComponent={Backdrop}
+                                            BackdropProps={{
+                                                timeout: 500
+                                            }}
+                                        >
+                                            <Fade in={modalStatus}>
+                                                <div className={classes.modalPaper} style={{outline:"none"}}>
+                                                    <div style={{width:"100%"}}>
+                                                        <Box display="flex" flexDirection="row">
+                                                            <Box display="flex" justifyContent="flex-start" alignSelf="flex-end" style={{width:"100%"}}>
+                                                                <Typography>
+                                                                    <Box
+                                                                    fontWeight="fontWeightBold"
+                                                                    fontSize="1.5vw"
+                                                                    fontFamily='Segoe UI Symbol'                                                            
+                                                                    >
+                                                                    {"Edit Profile"}
+                                                                    </Box>
+                                                                </Typography>
+                                                            </Box>
+                                                            <Box display="flex" alignSelf="flex-end"
+                                                                style={{paddingBottom:"5px",}}
+                                                            >
+                                                                <Close fontSize="default" 
+                                                                    style={{fill:"#02aab0", 
+                                                                            cursor:"pointer",
+                                                                            }}
+                                                                    onClick={handleModalClose}
+                                                                />
+                                                            </Box>
+                                                        </Box>                                                       
+                                                    </div>
+
+                                                    <Divider/>
+                                                    <Box style={{paddingTop:"2px", paddingBottom:"2px"}}>
+                                                        <div style={{width:"100%", overflowY:"auto", 
+                                                             maxHeight:"60vh", padding:"8px",
+                                                             scrollbarColor:"#00cdac #ffffff",
+                                                             scrollbarWidth:"thin"
+                                                             }}
+                                                        >
+                                                            <h2>Hello</h2>
+                                                            <h2>Hello</h2>
+                                                            <h2>Hello</h2>
+                                                            <h2>Hello</h2>
+                                                            <h2>Hello</h2>
+                                                            <h2>Hello</h2>
+                                                            <h2>Hello</h2>
+                                                            <h2>Hello</h2>
+                                                            <h2>Hello</h2>
+                                                            <h2>Hello</h2>
+                                                            <h2>Hello</h2>
+                                                            <h2>Hello</h2>
+                                                            <h2>Hello</h2>
+                                                        </div>
+                                                    </Box>
+                                                    <Divider/>
+                                                    <Box
+                                                        display="flex"
+                                                        alignContent="flex-end"
+                                                        alignSelf="flex-end"
+                                                        justifyContent="flex-end"
+                                                        pb={1} mb={1}
+                                                    >
+                                                        
+                                                        <Button
+                                                            className={classes.editProfile}
+                                                            onClick={handleModalSave}
+                                                        >
+                                                            <Typography>
+                                                                <Box
+                                                                fontSize="0.78vw"
+                                                                fontWeight="fontWeightBold"
+                                                                fontFamily='Segoe UI Symbol'
+                                                                >
+                                                                {"Save"}
+                                                                </Box>
+                                                            </Typography>
+                                                        </Button>
+                                                    </Box>
+                                                </div>
+                                            </Fade>
+
+                                        </Modal>
                                     </Box>
                                 </Box>
                             </Box>
