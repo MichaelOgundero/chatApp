@@ -21,10 +21,18 @@ import PersonIcon from '@material-ui/icons/Person'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import BlockIcon from '@material-ui/icons/Block'
 import {ExpandMore, ExpandLess, ExitToApp, MoreHoriz, 
-        FiberManualRecord, Cake, LocationOn, Wc, Event, Close} from '@material-ui/icons'
+        FiberManualRecord, Cake, LocationOn, Wc, Event, Close, Link} from '@material-ui/icons'
 import { useHistory } from 'react-router-dom'
 import {Tab, Tabs} from '@material-ui/core'
 import {Fade, Modal, Divider} from '@material-ui/core'
+
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker,
+} from '@material-ui/pickers'
+
+import 'date-fns'
+import DateFnsUtils from '@date-io/date-fns'
 
 import profilePic from "../../assets/profileImage.jpg"
 
@@ -300,6 +308,23 @@ const useStyles = makeStyles(theme=>({
         maxHeight:"80vh",
         maxWidth:"35vw",
         padding: theme.spacing(2,2,2,2)
+    },
+
+    textFieldColors:{
+        '& label.Mui-focused': {//changes the color of the label on the text field when its focused
+            color: '#02aab0',
+          },
+        '& .MuiInput-underline:after': {//changes the border color when focused
+            borderBottomColor: "#02aab0",
+          },
+    },  
+
+    linkEdit: {
+        color:"#696969",
+        "&:hover":{
+            color:"#02aab0",
+            textDecoration: "underline"
+        }
     }
 
 }))
@@ -317,6 +342,26 @@ export default function UserPage(props){
     const [currentTab, setCurrentTab] = useState(0);
 
     const [modalStatus, setModalStatus] = useState(false);
+
+    const [name, setName] = useState("Susan Andrews");
+    const [nameEdit, setNameEdit] = useState(name)
+
+    const [bio, setBio] = useState("This is my status and my status is what my status is This is my status and my status is what my status isssssssssss")
+    const [bioEdit, setBioEdit] = useState(bio)
+
+    const [location, setLocation] = useState("Amsterdam, Netherlands")
+    const [locationEdit, setLocationEdit] = useState(location)
+
+    const [website, setWebsite] = useState("youtube.com/jeremyjahns")
+    const [websiteEdit, setWebsiteEdit] = useState(website);
+
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    const convertDate=(date)=>{
+        const dated =  months[date.getMonth()] + " "+date.getDate()+", "+date.getFullYear()
+        return dated;
+    }
+    const [DOB, setDOB] = useState(convertDate(new Date("September 20, 1996")))
+    const [dobEdit, setDobEdit] = useState(DOB);
 
     useEffect(()=>{
         let unMounted = false;
@@ -374,8 +419,36 @@ export default function UserPage(props){
         setModalStatus(false);
     }
 
+
+
     const handleModalSave = () => {
         setModalStatus(false)
+        setName(nameEdit)
+        setBio(bioEdit)
+        setLocation(locationEdit)
+        setWebsite(websiteEdit)
+        setDOB(months[dobEdit.getMonth()] +" "+dobEdit.getDate()+", "+dobEdit.getFullYear())
+
+    }
+
+    const handleNameChange = (e) => {
+        setNameEdit(e.target.value)
+    }
+
+    const handleBioChange = (e) => {
+        setBioEdit(e.target.value)
+    }
+
+    const handleLocationChange = (e) => {
+        setLocationEdit(e.target.value)
+    }
+
+    const handleWebsiteChange = (e) => {
+        setWebsiteEdit(e.target.value)
+    }
+
+    const handleDobChange = date => {
+        setDobEdit(date);
     }
 
     function formRow(){
@@ -713,7 +786,7 @@ export default function UserPage(props){
                                                 style={{wordWrap:"break-word"}}
                                                 fontFamily='Segoe UI Symbol'
                                             >
-                                                {"Susan Andrews"}
+                                                {name}
                                             </Box>
                                         </Typography>
                                     </Box>
@@ -738,7 +811,7 @@ export default function UserPage(props){
                                                 p={0} m={0}
                                                 fontFamily='Segoe UI Symbol'
                                             >
-                                                {"This is my status and my status is what my status is This is my status and my status is what my status is"}
+                                                {bio}
                                             </Box>
                                         </Typography>
                                     </Box>
@@ -755,9 +828,25 @@ export default function UserPage(props){
                                                         style={{color:"#696969", marginTop:"3px", marginLeft:"2px", marginRight:"8px"}}
                                                         fontFamily='Segoe UI Symbol'
                                                     >
-                                                        {"May 12, 1996"}
+                                                        {DOB}
                                                     </Box>
                                                 </Typography>
+
+
+                                                <Box style={{margin:0, padding:0}}>
+                                                <Wc fontSize="small" style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
+                                                </Box>
+                                                <Typography>
+                                                    <Box
+                                                        fontWeight="fontWeightLight"
+                                                        fontSize="0.8vw"
+                                                        style={{color:"#696969", marginTop:"3px", marginLeft:"2px", marginRight:"2px"}}
+                                                        fontFamily='Segoe UI Symbol'
+                                                    >
+                                                    {"Female"}
+                                                </Box>
+                                                </Typography>
+
                                                 <Box style={{margin:0, padding:0}}>
                                                     <LocationOn fontSize="small" style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
                                                 </Box>
@@ -765,31 +854,20 @@ export default function UserPage(props){
                                                     <Box
                                                         fontWeight="fontWeightLight"
                                                         fontSize="0.8vw"
-                                                        style={{color:"#696969", marginTop:"3px", marginLeft:"2px"}}
+                                                        style={{color:"#696969", marginTop:"3px",}}
                                                         fontFamily='Segoe UI Symbol'
                                                     >
-                                                        {"Amsterdam, Netherlands"}
+                                                        {location}
                                                     </Box>
                                                 </Typography>
+                                                
                                             </Box>
                                         </div>
                                     </Box>
                                     <Box ml={1} mr={1} mt={0} pt={0} pl={1} pr={1}>
                                         <div style={{width:"100%",}} >
                                             <Box display="flex" flexDirection="row" style={{margin:"0 !important", padding:"0 !important"}}>
-                                                <Box style={{margin:0, padding:0}}>
-                                                    <Wc fontSize="small" style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
-                                                </Box>
-                                                <Typography>
-                                                    <Box
-                                                        fontWeight="fontWeightLight"
-                                                        fontSize="0.8vw"
-                                                        style={{color:"#696969", marginTop:"3px", marginLeft:"2px", marginRight:"42px"}}
-                                                        fontFamily='Segoe UI Symbol'
-                                                    >
-                                                        {"Female"}
-                                                    </Box>
-                                                </Typography>
+
                                                 <Box style={{margin:0, padding:0}}>
                                                     <Event fontSize="small" style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
                                                 </Box>
@@ -797,10 +875,27 @@ export default function UserPage(props){
                                                     <Box
                                                         fontWeight="fontWeightLight"
                                                         fontSize="0.8vw"
-                                                        style={{color:"#696969", marginTop:"3px", marginLeft:"2px"}}
+                                                        style={{color:"#696969", marginTop:"3px", marginLeft:"2px", marginRight:"8px"}}
                                                         fontFamily='Segoe UI Symbol'
                                                     >
                                                         {"Joined March 2020"}
+                                                    </Box>
+                                                </Typography>
+                                                
+                                                <Box style={{marginTop:"2px"}}>
+                                                    <Link fontSize="small" style={{ borderCollapse:"collapse", fill:"#696969"}}/>
+                                                </Box>
+                                                <Typography>
+                                                    <Box
+                                                        fontWeight="fontWeightLight"
+                                                        fontSize="0.8vw"
+                                                        style={{color:"#696969", marginTop:"3px", marginLeft:"2px"}}
+                                                        fontFamily='Segoe UI Symbol'
+                                                        className={classes.linkEdit}
+                                                        style={{cursor:"pointer"}}
+
+                                                    >
+                                                        <a href={`https://www.${website}`} target="_blank" style={{textDecoration:"none", color:"inherit", outline:"none"}}>{website}</a>
                                                     </Box>
                                                 </Typography>
                                             </Box>
@@ -855,6 +950,7 @@ export default function UserPage(props){
                                             BackdropProps={{
                                                 timeout: 500
                                             }}
+                                            
                                         >
                                             <Fade in={modalStatus}>
                                                 <div className={classes.modalPaper} style={{outline:"none"}}>
@@ -878,6 +974,7 @@ export default function UserPage(props){
                                                                     style={{fill:"#02aab0", 
                                                                             cursor:"pointer",
                                                                             }}
+                                                                            
                                                                     onClick={handleModalClose}
                                                                 />
                                                             </Box>
@@ -892,19 +989,77 @@ export default function UserPage(props){
                                                              scrollbarWidth:"thin"
                                                              }}
                                                         >
-                                                            <h2>Hello</h2>
-                                                            <h2>Hello</h2>
-                                                            <h2>Hello</h2>
-                                                            <h2>Hello</h2>
-                                                            <h2>Hello</h2>
-                                                            <h2>Hello</h2>
-                                                            <h2>Hello</h2>
-                                                            <h2>Hello</h2>
-                                                            <h2>Hello</h2>
-                                                            <h2>Hello</h2>
-                                                            <h2>Hello</h2>
-                                                            <h2>Hello</h2>
-                                                            <h2>Hello</h2>
+                                                            <Box mt={1} pt={1} mb={1} pb={1}>
+                                                                <TextField
+                                                                    multiline
+                                                                    fullWidth
+                                                                    label="Name"
+                                                                    helperText={`${nameEdit.length}/20`}
+                                                                    className={classes.textFieldColors}
+                                                                    inputProps={{
+                                                                        maxlength: "20",
+                                                                    }}
+                                                                    value={nameEdit}
+                                                                    onChange={handleNameChange}
+                                                                />
+                                                            </Box>
+                                                            <Box mb={1} pb={1}>
+                                                                <TextField
+                                                                    multiline
+                                                                    fullWidth
+                                                                    label="Bio"
+                                                                    helperText={`${bioEdit.length}/115`}
+                                                                    className={classes.textFieldColors}
+                                                                    inputProps={{
+                                                                        maxlength: "115",
+                                                                    }}
+                                                                    value={bioEdit}
+                                                                    onChange={handleBioChange}
+                                                                />
+                                                            </Box>
+                                                            <Box mb={1} pb={1}>
+                                                                <TextField
+                                                                    multiline
+                                                                    fullWidth
+                                                                    label="Location"
+                                                                    helperText={`${locationEdit.length}/25`}
+                                                                    className={classes.textFieldColors}
+                                                                    inputProps={{
+                                                                        maxlength: "25",
+                                                                    }}
+                                                                    value={locationEdit}
+                                                                    onChange={handleLocationChange}
+                                                                />
+                                                            </Box>
+                                                            <Box mb={1} pb={1}>
+                                                                <TextField
+                                                                    multiline
+                                                                    fullWidth
+                                                                    label="Website"
+                                                                    helperText={`${websiteEdit.length}/35`}
+                                                                    className={classes.textFieldColors}
+                                                                    inputProps={{
+                                                                        maxlength: "35",
+                                                                    }}
+                                                                    value={websiteEdit}
+                                                                    onChange={handleWebsiteChange}
+                                                                />
+                                                            </Box>
+                                                            <Box mb={1} pb={1}>
+                                                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                                                <KeyboardDatePicker
+                                                                    fullWidth
+                                                                    margin="normal"
+                                                                    disableToolbar
+                                                                    variant="inline"
+                                                                    format="MM/dd/yyyy"
+                                                                    label="Date of Birth"
+                                                                    value={dobEdit}
+                                                                    className={classes.textFieldColors}
+                                                                    onChange={handleDobChange}
+                                                                />
+                                                                </MuiPickersUtilsProvider>
+                                                            </Box>
                                                         </div>
                                                     </Box>
                                                     <Divider/>
