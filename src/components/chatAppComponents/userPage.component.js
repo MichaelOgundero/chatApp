@@ -21,10 +21,10 @@ import PersonIcon from '@material-ui/icons/Person'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import BlockIcon from '@material-ui/icons/Block'
 import {ExpandMore, ExpandLess, ExitToApp, MoreHoriz, 
-        FiberManualRecord, Cake, LocationOn, Wc, Event, Close, Link} from '@material-ui/icons'
+        FiberManualRecord, Cake, LocationOn, Wc, Event, Close, Link, AddAPhoto} from '@material-ui/icons'
 import { useHistory } from 'react-router-dom'
 import {Tab, Tabs} from '@material-ui/core'
-import {Fade, Modal, Divider} from '@material-ui/core'
+import {Fade, Modal, Divider,} from '@material-ui/core'
 
 import {
     MuiPickersUtilsProvider,
@@ -35,6 +35,7 @@ import 'date-fns'
 import DateFnsUtils from '@date-io/date-fns'
 
 import profilePic from "../../assets/profileImage.jpg"
+import uploadImage from '../../assets/uploadImage.png'
 
 function TabPanel(props){
     const {children, value, index, ...other} = props;
@@ -325,7 +326,7 @@ const useStyles = makeStyles(theme=>({
             color:"#02aab0",
             textDecoration: "underline"
         }
-    }
+    },
 
 }))
 
@@ -449,6 +450,10 @@ export default function UserPage(props){
 
     const handleDobChange = date => {
         setDobEdit(date);
+    }
+
+    const handleUploadImage = () => {
+        console.log("upload")
     }
 
     function formRow(){
@@ -989,7 +994,37 @@ export default function UserPage(props){
                                                              scrollbarWidth:"thin"
                                                              }}
                                                         >
-                                                            <Box mt={1} pt={1} mb={1} pb={1}>
+                                                            <Box mt={1} pt={1} mb={1} pb={1} display="flex" alignContent="center"  style={{ width:"100%", height:"100%"}}>
+                                                                    <div style={{margin:"0 auto"}}>
+                                                                    <Badge
+                                                                        overlap="circle"
+                                                                        anchorOrigin={{
+                                                                            vertical:"bottom",
+                                                                            horizontal:"right"
+                                                                        }}
+                                                                        badgeContent={
+                                                                            <IconButton onClick={handleUploadImage}>
+                                                                            <Avatar alt="upload image" src={uploadImage} 
+                                                                                className={classes.uploadIcon}
+                                                                                style={{
+                                                                                width:"50px", height:"50px",background:"#00cdac",
+                                                                                border:"2px solid white",
+                                                                                cursor:"pointer"
+                                                                                }}
+                                                                            />
+                                                                            </IconButton>
+                                                                        }
+                                                                    >
+                                                                        <Avatar alt="profile Image" src={profilePic}
+                                                                            style={{width:"200px", 
+                                                                                height:"200px", 
+                                                                                maxWidth:"200px",
+                                                                                maxHeight:"200px"}}
+                                                                        />                                                                       
+                                                                    </Badge>
+                                                                    </div>
+                                                            </Box>
+                                                            <Box mb={1} pb={1}>
                                                                 <TextField
                                                                     multiline
                                                                     fullWidth
