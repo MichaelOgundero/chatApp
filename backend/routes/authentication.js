@@ -42,12 +42,17 @@ router.route('/register').post((req, res)=>{
                         return bcrypt.hash(password, salt)
                     })
                     .then(hash => {
+                        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+                        const today = new Date();
+                        const joined =  months[today.getMonth()]+" "+today.getFullYear()
+
                         const newAuthentication = new Authentication({
                             firstName: firstName,
                             lastName: lastName,
                             email: email,
                             username: username,
-                            password: hash
+                            password: hash,
+                            joined: joined
                         });
                         newAuthentication.save()
                         .then(()=>res.status(200).json('user created'))

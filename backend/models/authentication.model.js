@@ -7,7 +7,15 @@ const authenticationSchema = new Schema({
     email: {type: String, required: true, unique: true},
     username: {type: String, required: true, unique: true},
     password:{type: String, required: true, minlength: 4},
-    confirmPassword: {type: String, minlength: 4}
+    confirmPassword: {type: String, minlength: 4},
+
+    dateOfBirth:{type: Date, required:false},
+    sex: {type: String, required:false},
+    location: {type: String, required: false},
+    joined: {type: String},
+    website: {type: String, required: false},
+    bio: {type: String, required: false},
+
 }, {
     timestamps: true
 });
