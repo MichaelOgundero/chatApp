@@ -364,6 +364,9 @@ export default function UserPage(props){
     const [DOB, setDOB] = useState(convertDate(new Date("September 20, 1996")))
     const [dobEdit, setDobEdit] = useState(DOB);
 
+    const [profilePicture, setProfilePicture] = useState(profilePic);
+    const [profilePictureEdit, setProfilePictureEdit] = useState(profilePicture);
+
     useEffect(()=>{
         let unMounted = false;
         //_isMounted && loadUserData()
@@ -429,6 +432,7 @@ export default function UserPage(props){
         setLocation(locationEdit)
         setWebsite(websiteEdit)
         setDOB(months[dobEdit.getMonth()] +" "+dobEdit.getDate()+", "+dobEdit.getFullYear())
+        setProfilePicture(profilePictureEdit);
 
     }
 
@@ -452,7 +456,8 @@ export default function UserPage(props){
         setDobEdit(date);
     }
 
-    const handleUploadImage = () => {
+    const handleUploadImage = (pic) => {
+        setProfilePictureEdit(pic)
         console.log("upload")
     }
 
@@ -543,7 +548,7 @@ export default function UserPage(props){
                                             }}
                                             variant="dot"
                                             >
-                                                <Avatar src={profilePic}></Avatar>
+                                                <Avatar src={profilePicture}></Avatar>
                                             </StyledBadge>
                                         </ListItemAvatar>
                                         <ListItemText primary={
