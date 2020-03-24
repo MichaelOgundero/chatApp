@@ -39,35 +39,35 @@ router.route('/user_info/:username').get(checkToken, (req, res)=>{
 router.route('/user_info/:username/editProfile').patch(checkToken, (req, res)=>{
     const username = req.params.username;
     const {dateOfBirth, sex, location, website, bio} = req.body
-    Authentication.findOne({username: username})
-        .then(user=>{
-            if(user){
-                Authentication.updateOne(
-                    {username: user.username},
-                    {
-                        $set: {
-                            dateOfBirth: dateOfBirth,
-                            sex: sex,
-                            location: location,
-                            website: website,
-                            bio: bio
-                        }
-                    }
-                )
+
+    const query = {username: username}
+    
+    const update ={
+        $set:{
+            dateOfBirth: dateOfBirth,
+            sex: sex,
+            location: location,
+            website: website,
+            bio: bio
+        }
+    }
+
+    Authentication.findOneAndUpdate(query, update)
+        .then(updatedDocument=>{
+            if(updatedDocument){
                 res.status(200).json({
-                    sucess: true,
-                    message:"user update successfully"
+                    success: true,
+                    message: "user updated"
                 })
             }else{
                 res.status(404).json({
-                    sucess: false,
-                    message:"user does not exist"
+                    success: false,
+                    message: "user does not exist"
                 })
             }
+            //return updatedDocument
         })
-
-    
-
+        .catch(err=>{res.status(400).json("err "+err)})
 })
 
 module.exports = router;

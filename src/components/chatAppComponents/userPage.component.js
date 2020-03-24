@@ -23,8 +23,10 @@ import BlockIcon from '@material-ui/icons/Block'
 import {ExpandMore, ExpandLess, ExitToApp, MoreHoriz, 
         FiberManualRecord, Cake, LocationOn, Wc, Event, Close, Link, AddAPhoto} from '@material-ui/icons'
 import { useHistory } from 'react-router-dom'
-import {Tab, Tabs} from '@material-ui/core'
+import {Tab, Tabs, Snackbar} from '@material-ui/core'
 import {Fade, Modal, Divider,} from '@material-ui/core'
+import MuiAlert from '@material-ui/lab/Alert'
+
 
 import {
     MuiPickersUtilsProvider,
@@ -58,6 +60,10 @@ TabPanel.propTypes = {
     index: PropTypes.any.isRequired,
     value: PropTypes.any.isRequired,
 };
+
+function Alert(props){
+    return <MuiAlert elevation={6} variany="filled" {...props}/>
+}
 
 function a11yProps(index){
     return {
@@ -344,28 +350,42 @@ export default function UserPage(props){
 
     const [modalStatus, setModalStatus] = useState(false);
 
-    const [name, setName] = useState("Susan Andrews");
-    const [nameEdit, setNameEdit] = useState(name)
+    const [name, setName] = useState("");
+    const [nameEdit, setNameEdit] = useState(name);
 
-    const [bio, setBio] = useState("This is my status and my status is what my status is This is my status and my status is what my status isssssssssss")
+    const [firstName, setFirstName] = useState("")
+    const [username, setUsername] = useState("")
+
+    const [bio, setBio] = useState("")
     const [bioEdit, setBioEdit] = useState(bio)
+    const [bioStyle, setBioStyle] = useState("")
 
-    const [location, setLocation] = useState("Amsterdam, Netherlands")
+    const [sex, setSex] = useState("")
+    const [sexEdit, setSexEdit] = useState("")
+    const [sexStyle, setSexStyle] = useState("")
+
+    const [joined, setJoined] = useState("")
+
+    const [location, setLocation] = useState("")
     const [locationEdit, setLocationEdit] = useState(location)
+    const [locationStyle, setLocationStyle] = useState("")
 
-    const [website, setWebsite] = useState("youtube.com/jeremyjahns")
+    const [website, setWebsite] = useState("")
     const [websiteEdit, setWebsiteEdit] = useState(website);
+    const [websiteStyle, setWebsiteStyle] = useState("")
 
+
+    const [DOB, setDOB] = useState("")
+    const [dobEdit, setDobEdit] = useState("");
+    const [dobStyle, setDobStyle] = useState("")
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    const convertDate=(date)=>{
-        const dated =  months[date.getMonth()] + " "+date.getDate()+", "+date.getFullYear()
-        return dated;
-    }
-    const [DOB, setDOB] = useState(convertDate(new Date("September 20, 1996")))
-    const [dobEdit, setDobEdit] = useState(DOB);
+
 
     const [profilePicture, setProfilePicture] = useState(profilePic);
     const [profilePictureEdit, setProfilePictureEdit] = useState(profilePicture);
+
+    const [editProfileSnackbar, setEditProfileSnackbar] = useState(false);
+    const [errorEditProfileSnackBar, setErrorEditProfileSnackbar] = useState(false);
 
     useEffect(()=>{
         let unMounted = false;
@@ -379,7 +399,63 @@ export default function UserPage(props){
         axios.get(`http://localhost:5000/user/user_info/${props.match.params.user}`, config)
              .then(res=>{
                 if(!unMounted){
-                    setUserData(userData.push(res.data))
+                    setUserData(userData.push(res.data))//NEEDS WORK!!!
+                    setFirstName(userData[0].firstName);
+
+                    setName(`${userData[0].firstName} ${userData[0].lastName}`)
+                    setNameEdit(`${userData[0].firstName} ${userData[0].lastName}`)
+                    
+                    setUsername(`@${userData[0].username}`)
+
+                    setJoined(userData[0].joined)
+
+                    if(userData[0].dateOfBirth === null){
+                        setDobStyle('oblique')
+                        setDOB("not set")
+                    }else{
+                        setDobStyle('normal')
+                        const birth = userData[0].dateOfBirth
+
+                        //const dated =  months[birth.getMonth()] + " "+birth.getDate()+", "+birth.getFullYear()
+                        //console.log(dated)
+
+                        setDOB(userData[0].dateOfBirth)
+                        setDobEdit(userData[0].dateOfBirth);
+                    }
+
+                    if(userData[0].bio === ""){
+                        setBioStyle('oblique')
+                        setBio("not set")
+                    }else{
+                        setBioStyle('normal')
+                        setBio(userData[0].bio)
+                        setBioEdit(userData[0].bio)
+                    }
+                    if(userData[0].sex === ""){
+                        setSexStyle('oblique')
+                        setSex("not set")
+                    }else{
+                        setSexStyle('normal')
+                        setSex(userData[0].sex)
+                        setSexEdit(userData[0].sex)
+                    }
+                    if(userData[0].location === ""){
+                        setLocationStyle('oblique')
+                        setLocation("not set")
+                    }else{
+                        setLocationStyle('normal')
+                        setLocation(userData[0].location)
+                        setLocationEdit(userData[0].location)
+                    }
+                    if(userData[0].website === ""){
+                        setWebsiteStyle('oblique')
+                        setWebsite("not set")
+                    }else{
+                        setWebsiteStyle('normal')
+                        setWebsite(userData[0].website)
+                        setWebsiteEdit(userData[0].website)
+                    }
+
                     setIsLoading(false)
                     setBackdropStatus(false)
                     console.log(userData)
@@ -428,11 +504,61 @@ export default function UserPage(props){
     const handleModalSave = () => {
         setModalStatus(false)
         setName(nameEdit)
-        setBio(bioEdit)
-        setLocation(locationEdit)
-        setWebsite(websiteEdit)
+
+        if(bioEdit === ""){
+            setBioStyle('oblique')
+            setBio("not set")
+        }else{
+            setBioStyle('normal')
+            setBio(bioEdit)
+        }
+        if(sexEdit === ""){
+            setSexStyle('obllique')
+            setSex('not set')
+        }else{
+            setSexStyle('normal')
+            setSex(sexEdit)
+        }
+        if(locationEdit === ""){
+            setLocationStyle('oblique')
+            setLocation('not set')
+        }else{
+            setLocationStyle('normal')
+            setLocation(locationEdit)
+        }
+        if(websiteEdit===""){
+            setWebsiteStyle('oblique')
+            setWebsite('not set')
+        }else{
+            setWebsiteStyle('normal')
+            setWebsite(websiteEdit)
+        }
+        
         setDOB(months[dobEdit.getMonth()] +" "+dobEdit.getDate()+", "+dobEdit.getFullYear())
+        console.log(dobEdit)
         setProfilePicture(profilePictureEdit);
+
+        const data = {
+            "dateOfBirth": dobEdit,
+            "sex": sexEdit,
+            "location": locationEdit,
+            "website": websiteEdit,
+            "bio": bioEdit
+        }
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('usertoken')}`
+            }
+        }
+
+        axios.patch(`http://localhost:5000/user/user_info/${props.match.params.user}/editProfile`, data, config)
+            .then(res=>{
+                setEditProfileSnackbar(true)
+            })
+            .catch(err=>{
+                setErrorEditProfileSnackbar(true)
+            })
 
     }
 
@@ -450,6 +576,10 @@ export default function UserPage(props){
 
     const handleWebsiteChange = (e) => {
         setWebsiteEdit(e.target.value)
+    }
+
+    const handleSexChange =(e) => {
+        setSexEdit(e.target.value)
     }
 
     const handleDobChange = date => {
@@ -553,7 +683,7 @@ export default function UserPage(props){
                                         </ListItemAvatar>
                                         <ListItemText primary={
                                             <Typography variant='h5' className={classes.userName}>
-                                                {"Susan"}
+                                                {firstName}
                                             </Typography>
                                         } />
                                         {open ? <ExpandLess style={{fill:"white"}}/> : <ExpandMore style={{fill:"white"}}/>}
@@ -808,7 +938,7 @@ export default function UserPage(props){
                                                 style={{color:"#696969", wordWrap:"break-word"}}
                                                 fontFamily='Segoe UI Symbol'
                                             >
-                                                {"@youngTickles"}
+                                                {username}
                                             </Box>
                                         </Typography>
                                     </Box>
@@ -817,6 +947,7 @@ export default function UserPage(props){
                                             <Box
                                                 fontWeight="fontWeightLight"
                                                 fontSize="1vw"
+                                                fontStyle={bioStyle}
                                                 style={{color:"#000000", wordWrap:"break-word",}}
                                                 p={0} m={0}
                                                 fontFamily='Segoe UI Symbol'
@@ -852,8 +983,9 @@ export default function UserPage(props){
                                                         fontSize="0.8vw"
                                                         style={{color:"#696969", marginTop:"3px", marginLeft:"2px", marginRight:"2px"}}
                                                         fontFamily='Segoe UI Symbol'
+                                                        fontStyle={sexStyle}
                                                     >
-                                                    {"Female"}
+                                                    {sex}
                                                 </Box>
                                                 </Typography>
 
@@ -866,6 +998,7 @@ export default function UserPage(props){
                                                         fontSize="0.8vw"
                                                         style={{color:"#696969", marginTop:"3px",}}
                                                         fontFamily='Segoe UI Symbol'
+                                                        fontStyle={locationStyle}
                                                     >
                                                         {location}
                                                     </Box>
@@ -888,7 +1021,7 @@ export default function UserPage(props){
                                                         style={{color:"#696969", marginTop:"3px", marginLeft:"2px", marginRight:"8px"}}
                                                         fontFamily='Segoe UI Symbol'
                                                     >
-                                                        {"Joined March 2020"}
+                                                        {joined}
                                                     </Box>
                                                 </Typography>
                                                 
@@ -901,11 +1034,12 @@ export default function UserPage(props){
                                                         fontSize="0.8vw"
                                                         style={{color:"#696969", marginTop:"3px", marginLeft:"2px"}}
                                                         fontFamily='Segoe UI Symbol'
+                                                        fontStyle={websiteStyle}
                                                         className={classes.linkEdit}
                                                         style={{cursor:"pointer"}}
 
                                                     >
-                                                        <a href={`https://www.${website}`} target="_blank" style={{textDecoration:"none", color:"inherit", outline:"none"}}>{website}</a>
+                                                        <a href={`${website}`} target="_blank" style={{textDecoration:"none", color:"inherit", outline:"none"}}>{website}</a>
                                                     </Box>
                                                 </Typography>
                                             </Box>
@@ -1048,13 +1182,27 @@ export default function UserPage(props){
                                                                     multiline
                                                                     fullWidth
                                                                     label="Bio"
-                                                                    helperText={`${bioEdit.length}/115`}
+                                                                    helperText={`${bioEdit.length}/110`}
                                                                     className={classes.textFieldColors}
                                                                     inputProps={{
-                                                                        maxlength: "115",
+                                                                        maxlength: "110",
                                                                     }}
                                                                     value={bioEdit}
                                                                     onChange={handleBioChange}
+                                                                />
+                                                            </Box>
+                                                            <Box mb={1} pb={1}>
+                                                                <TextField
+                                                                    multiline
+                                                                    fullWidth
+                                                                    label="Sex"
+                                                                    helperText={`${sexEdit.length}/6`}
+                                                                    className={classes.textFieldColors}
+                                                                    inputProps={{
+                                                                        maxlength: "6",
+                                                                    }}
+                                                                    value={sexEdit}
+                                                                    onChange={handleSexChange}
                                                                 />
                                                             </Box>
                                                             <Box mb={1} pb={1}>
@@ -1089,14 +1237,19 @@ export default function UserPage(props){
                                                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                                                 <KeyboardDatePicker
                                                                     fullWidth
+                                                                    clearable
                                                                     margin="normal"
-                                                                    disableToolbar
                                                                     variant="inline"
                                                                     format="MM/dd/yyyy"
+                                                                    placeHolder="01/01/1990"
                                                                     label="Date of Birth"
+                                                                    orientation="portrait"
                                                                     value={dobEdit}
                                                                     className={classes.textFieldColors}
                                                                     onChange={handleDobChange}
+                                                                    inputProps={{
+                                                                        color: "#00cdac"
+                                                                    }}
                                                                 />
                                                                 </MuiPickersUtilsProvider>
                                                             </Box>
@@ -1125,6 +1278,7 @@ export default function UserPage(props){
                                                                 </Box>
                                                             </Typography>
                                                         </Button>
+
                                                     </Box>
                                                 </div>
                                             </Fade>
@@ -1188,6 +1342,41 @@ export default function UserPage(props){
                 </Hidden>
             </Grid>
             </div>
+            <Snackbar
+                anchorOrigin={{vertical:"bottom", horizontal:"center"}}
+                open={editProfileSnackbar}
+                autoHideDuration={2000}
+                onClose={(event,reason)=>{
+                    if(reason === 'clickaway'){
+                        return
+                    }
+                    setEditProfileSnackbar(false)
+                }}
+            >
+                <Alert severity="success">
+                    Profile Updated!!
+                </Alert>
+            </Snackbar>
+            <Snackbar 
+                anchorOrigin={{vertical: "bottom", horizontal:"center"}}
+                open={errorEditProfileSnackBar}
+                        onClose={(event, reason)=>{
+                        if(reason==='clickaway'){
+                            return;
+                        }
+                        setErrorEditProfileSnackbar(false)
+                    }}
+                    autoHideDuration={5000}>
+                
+                <Alert severity="error" onClose={(event, reason)=>{
+                    if(reason==='clickaway'){
+                        return;
+                    }
+                    setErrorEditProfileSnackbar(false)
+                }}>
+                    Something went wrong
+                </Alert>
+            </Snackbar>
         </Container>
     )
 }
