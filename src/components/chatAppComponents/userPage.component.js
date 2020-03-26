@@ -333,6 +333,11 @@ const useStyles = makeStyles(theme=>({
         },
         '& .MuiButton-textPrimary':{
             color: "#02aab0"
+        },
+        '& .MuiPickersToolbarButton-toolbarBtn':{
+            '& .MuiPickersToolbarText-toolbarTxt':{
+                color: "#ffffff"
+            }
         }
     },
 
