@@ -2,8 +2,14 @@ const router = require('express').Router();
 const {checkToken} = require('../middleware.js');
 const bodyParser = require("body-parser");
 
+const multer = require('multer') //used for handling file systems
+
+
 router.use(require('cookie-parser')());
 router.use(bodyParser.json());
+
+
+
 
 let Authentication = require('../models/authentication.model');
 
@@ -41,14 +47,15 @@ router.route('/user_info/:username/editProfile').patch(checkToken, (req, res)=>{
     const {dateOfBirth, sex, location, website, bio} = req.body
 
     const query = {username: username}
-    
+
     const update ={
         $set:{
             dateOfBirth: dateOfBirth,
             sex: sex,
             location: location,
             website: website,
-            bio: bio
+            bio: bio,
+            
         }
     }
 

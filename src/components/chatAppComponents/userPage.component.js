@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 import { makeStyles, withStyles } from '@material-ui/core/styles'
@@ -354,6 +354,7 @@ const useStyles = makeStyles(theme=>({
 export default function UserPage(props){
     const classes = useStyles();
     const history = useHistory();
+    const uploadRef = useRef(null);
 
     const [userData, setUserData] = useState([])
     const [open, setOpen] = useState(false);
@@ -605,9 +606,11 @@ export default function UserPage(props){
         setDobEdit(date);
     }
 
-    const handleUploadImage = (pic) => {
-        setProfilePictureEdit(pic)
-        console.log("upload")
+    const handleUploadImage = (event) => {
+        uploadRef.current.click();
+
+       // setProfilePictureEdit(pic)
+        console.log(event)
     }
 
     function formRow(){
@@ -1162,16 +1165,24 @@ export default function UserPage(props){
                                                                             horizontal:"right"
                                                                         }}
                                                                         badgeContent={
-                                                                            <IconButton onClick={handleUploadImage}>
-                                                                            <Avatar alt="upload image" src={uploadImage} 
-                                                                                className={classes.uploadIcon}
-                                                                                style={{
-                                                                                width:"50px", height:"50px",background:"#00cdac",
-                                                                                border:"2px solid white",
-                                                                                cursor:"pointer"
-                                                                                }}
-                                                                            />
-                                                                            </IconButton>
+                                                                            <div>
+                                                                                <input
+                                                                                type="file"
+                                                                                id="fileLoadaer"
+                                                                                ref = {uploadRef}                                                                                
+                                                                                style={{display:"none"}}
+                                                                                />
+                                                                                <IconButton onClick={handleUploadImage}>
+                                                                                    <Avatar alt="upload image" src={uploadImage} 
+                                                                                    className={classes.uploadIcon}
+                                                                                    style={{
+                                                                                    width:"50px", height:"50px",background:"#00cdac",
+                                                                                    border:"2px solid white",
+                                                                                    cursor:"pointer"
+                                                                                    }}
+                                                                                    />
+                                                                                </IconButton>
+                                                                            </div>
                                                                         }
                                                                     >
                                                                         <Avatar alt="profile Image" src={profilePic}

@@ -15,6 +15,17 @@ const authenticationSchema = new Schema({
     joined: {type: String},
     website: {type: String, required: false},
     bio: {type: String, required: false},
+    /*profilePicture: {
+        imageName: {
+            type: String,
+            default: 'none',
+            required: true
+        },
+        imageData: {
+            type: String,
+            required: true
+        }
+    }*/
 
 }, {
     timestamps: true

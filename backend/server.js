@@ -26,6 +26,7 @@ const userPage = require('./routes/user');
 app.use('/authentication', authenticationRouter);
 app.use('/user', userPage);
 
+
 app.listen(port, ()=>{
     console.log(`app is listening on port ${port}`)
 })
