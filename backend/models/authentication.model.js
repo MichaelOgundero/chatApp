@@ -9,7 +9,7 @@ const authenticationSchema = new Schema({
     password:{type: String, required: true, minlength: 4},
     confirmPassword: {type: String, minlength: 4},
 
-    dateOfBirth:{type: Date, required:false},
+    dateOfBirth:{type: String, required:false},
     sex: {type: String, required:false},
     location: {type: String, required: false},
     joined: {type: String},

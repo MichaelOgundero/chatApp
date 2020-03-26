@@ -26,18 +26,16 @@ import { useHistory } from 'react-router-dom'
 import {Tab, Tabs, Snackbar} from '@material-ui/core'
 import {Fade, Modal, Divider,} from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
-
-
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers'
-
 import 'date-fns'
 import DateFnsUtils from '@date-io/date-fns'
-
 import profilePic from "../../assets/profileImage.jpg"
 import uploadImage from '../../assets/uploadImage.png'
+
+
 
 function TabPanel(props){
     const {children, value, index, ...other} = props;
@@ -326,6 +324,18 @@ const useStyles = makeStyles(theme=>({
           },
     },  
 
+    calendarColors:{
+        '& .MuiPickersToolbar-toolbar':{
+            backgroundColor:"#02aab0",
+        },
+        '& .MuiPickersDay-daySelected':{
+            backgroundColor: "#02aab0"
+        },
+        '& .MuiButton-textPrimary':{
+            color: "#02aab0"
+        }
+    },
+
     linkEdit: {
         color:"#696969",
         "&:hover":{
@@ -414,13 +424,8 @@ export default function UserPage(props){
                         setDOB("not set")
                     }else{
                         setDobStyle('normal')
-                        const birth = userData[0].dateOfBirth
-
-                        //const dated =  months[birth.getMonth()] + " "+birth.getDate()+", "+birth.getFullYear()
-                        //console.log(dated)
-
                         setDOB(userData[0].dateOfBirth)
-                        setDobEdit(userData[0].dateOfBirth);
+                        setDobEdit(new Date(userData[0].dateOfBirth));
                     }
 
                     if(userData[0].bio === ""){
@@ -478,6 +483,7 @@ export default function UserPage(props){
              })
              .catch(err=>console.log(err))
     }
+    
 
     const nameClick = () =>{
         setOpen(!open);
@@ -502,64 +508,72 @@ export default function UserPage(props){
 
 
     const handleModalSave = () => {
-        setModalStatus(false)
-        setName(nameEdit)
-
-        if(bioEdit === ""){
-            setBioStyle('oblique')
-            setBio("not set")
-        }else{
-            setBioStyle('normal')
-            setBio(bioEdit)
-        }
-        if(sexEdit === ""){
-            setSexStyle('obllique')
-            setSex('not set')
-        }else{
-            setSexStyle('normal')
-            setSex(sexEdit)
-        }
-        if(locationEdit === ""){
-            setLocationStyle('oblique')
-            setLocation('not set')
-        }else{
-            setLocationStyle('normal')
-            setLocation(locationEdit)
-        }
-        if(websiteEdit===""){
-            setWebsiteStyle('oblique')
-            setWebsite('not set')
-        }else{
-            setWebsiteStyle('normal')
-            setWebsite(websiteEdit)
-        }
-        
-        setDOB(months[dobEdit.getMonth()] +" "+dobEdit.getDate()+", "+dobEdit.getFullYear())
-        console.log(dobEdit)
-        setProfilePicture(profilePictureEdit);
-
-        const data = {
-            "dateOfBirth": dobEdit,
-            "sex": sexEdit,
-            "location": locationEdit,
-            "website": websiteEdit,
-            "bio": bioEdit
-        }
 
         const config = {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('usertoken')}`
             }
         }
+        const Dateformated = months[dobEdit.getMonth()] +" "+dobEdit.getDate()+", "+dobEdit.getFullYear()
+
+
+        const data = {
+            "dateOfBirth": Dateformated,
+            "sex": sexEdit,
+            "location": locationEdit,
+            "website": websiteEdit,
+            "bio": bioEdit
+        }
 
         axios.patch(`http://localhost:5000/user/user_info/${props.match.params.user}/editProfile`, data, config)
             .then(res=>{
                 setEditProfileSnackbar(true)
+
+                setModalStatus(false)
+                setName(nameEdit)
+        
+                if(bioEdit === ""){
+                    setBioStyle('oblique')
+                    setBio("not set")
+                }else{
+                    setBioStyle('normal')
+                    setBio(bioEdit)
+                }
+                if(sexEdit === ""){
+                    setSexStyle('obllique')
+                    setSex('not set')
+                }else{
+                    setSexStyle('normal')
+                    setSex(sexEdit)
+                }
+                if(locationEdit === ""){
+                    setLocationStyle('oblique')
+                    setLocation('not set')
+                }else{
+                    setLocationStyle('normal')
+                    setLocation(locationEdit)
+                }
+                if(websiteEdit===""){
+                    setWebsiteStyle('oblique')
+                    setWebsite('not set')
+                }else{
+                    setWebsiteStyle('normal')
+                    setWebsite(websiteEdit)
+                }
+                if(dobEdit===""){
+                    setDobStyle('oblique')
+                    setDOB('not set')
+                }else{
+                    setDobStyle('normal')
+                    setDOB(months[dobEdit.getMonth()] +" "+dobEdit.getDate()+", "+dobEdit.getFullYear())
+                }
+                
+                console.log(dobEdit)
+                setProfilePicture(profilePictureEdit);                
             })
             .catch(err=>{
                 setErrorEditProfileSnackbar(true)
             })
-
     }
 
     const handleNameChange = (e) => {
@@ -968,6 +982,7 @@ export default function UserPage(props){
                                                         fontSize="0.8vw"
                                                         style={{color:"#696969", marginTop:"3px", marginLeft:"2px", marginRight:"8px"}}
                                                         fontFamily='Segoe UI Symbol'
+                                                        fontStyle={dobStyle}
                                                     >
                                                         {DOB}
                                                     </Box>
@@ -1235,11 +1250,12 @@ export default function UserPage(props){
                                                             </Box>
                                                             <Box mb={1} pb={1}>
                                                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    
                                                                 <KeyboardDatePicker
-                                                                    fullWidth
+                                                                    fullWidth 
                                                                     clearable
                                                                     margin="normal"
-                                                                    variant="inline"
+                                                                    variant="dialog"
                                                                     format="MM/dd/yyyy"
                                                                     placeHolder="01/01/1990"
                                                                     label="Date of Birth"
@@ -1247,10 +1263,12 @@ export default function UserPage(props){
                                                                     value={dobEdit}
                                                                     className={classes.textFieldColors}
                                                                     onChange={handleDobChange}
-                                                                    inputProps={{
-                                                                        color: "#00cdac"
+                                                                    DialogProps={{
+                                                                        className: classes.calendarColors
                                                                     }}
+
                                                                 />
+                                                                
                                                                 </MuiPickersUtilsProvider>
                                                             </Box>
                                                         </div>
