@@ -574,7 +574,8 @@ export default function UserPage(props){
                     setDOB(months[dobEdit.getMonth()] +" "+dobEdit.getDate()+", "+dobEdit.getFullYear())
                 }
                 
-                console.log(dobEdit)
+                //console.log(dobEdit)
+
                 setProfilePicture(profilePictureEdit);                
             })
             .catch(err=>{
@@ -606,11 +607,13 @@ export default function UserPage(props){
         setDobEdit(date);
     }
 
-    const handleUploadImage = (event) => {
-        uploadRef.current.click();
+    const handleFiles = (event) => {
+        console.log(event.target.files[0])
+        setProfilePictureEdit(event.target.files[0])
+    }
 
-       // setProfilePictureEdit(pic)
-        console.log(event)
+    const handleUploadImage = () => {
+        uploadRef.current.click();
     }
 
     function formRow(){
@@ -1171,6 +1174,7 @@ export default function UserPage(props){
                                                                                 id="fileLoadaer"
                                                                                 ref = {uploadRef}                                                                                
                                                                                 style={{display:"none"}}
+                                                                                onChange={handleFiles}
                                                                                 />
                                                                                 <IconButton onClick={handleUploadImage}>
                                                                                     <Avatar alt="upload image" src={uploadImage} 
