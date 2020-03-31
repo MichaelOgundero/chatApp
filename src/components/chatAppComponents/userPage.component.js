@@ -436,18 +436,10 @@ export default function UserPage(props){
     const [editProfileSnackbar, setEditProfileSnackbar] = useState(false);
     const [errorEditProfileSnackBar, setErrorEditProfileSnackbar] = useState(false);
 
-    const [imageLiked, setImageLiked] = useState(false);
-    const [likedColor, setLikedColor] = useState("");
 
-    const handleImageLiked = () => {
-        setImageLiked(!imageLiked)
+    const [likeIcon, setLikeIcon] = useState("");
 
-        if(imageLiked){
-            setLikedColor("#ff0000")
-        }else{
-            setLikedColor("")
-        }
-    }
+
     useEffect(()=>{
         let unMounted = false;
         //_isMounted && loadUserData()
@@ -531,42 +523,48 @@ export default function UserPage(props){
             title: "Title",
             by: username,
             imageLiked: false,
-            likeIcon: <Favorite/>
+            likeIcon: <LikedImage/>,
+            notLikedIcon: <Favorite/>
         },
         {
             img: "https://source.unsplash.com/weekly?water",
             title: "Title",
             by: username,
             imageLiked: false,
-            likeIcon: <Favorite/>
+            likeIcon: <LikedImage/>,
+            notLikedIcon: <Favorite/>
         },
         {
             img: "https://source.unsplash.com/weekly?road",
             title: "Title",
             by: username,
             imageLiked: false,
-            likeIcon: <Favorite/>
+            likeIcon: <LikedImage/>,
+            notLikedIcon: <Favorite/>
         },
         {
             img: "https://source.unsplash.com/weekly?city",
             title: "Title",
             by: username,
             imageLiked: false,
-            likeIcon: <Favorite/>
+            likeIcon: <LikedImage/>,
+            notLikedIcon: <Favorite/>
         },
         {
             img: "https://source.unsplash.com/weekly?sky",
             title: "Title",
             by: username,
             imageLiked: false,
-            likeIcon: <Favorite/>
+            likeIcon: <LikedImage/>,
+            notLikedIcon: <Favorite/>
         },
         {
             img: "https://source.unsplash.com/weekly?game",
             title: "Title",
             by: username,
             imageLiked: false,
-            likeIcon: <Favorite/>
+            likeIcon: <LikedImage/>,
+            notLikedIcon: <Favorite/>
         }
     ]
 
@@ -1490,13 +1488,12 @@ export default function UserPage(props){
                                                         actionIcon={
                                                             <IconButton aria-label={`like`} className={classes.favIcon} 
                                                             onClick={()=>{
+                                                                //setLikeIcon(tile.notLikedIcon)
                                                                 tile.imageLiked = !tile.imageLiked
                                                                 console.log(tile.imageLiked)
-                                                                if(tile.imageLiked){
-                                                                    tile.likeIcon = <LikedImage/>
-                                                                }
+                                                               
                                                             }}>
-                                                                {tile.likeIcon}
+                                                                {tile.imageLiked ? tile.imageLiked : tile.notLikedIcon}
                                                             </IconButton>
                                                         }
                                                     />
