@@ -3,12 +3,13 @@ import axios from 'axios';
 
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
-
 import PropTypes from 'prop-types'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
 import { TextField, Typography, List, ListItem,ListItemSecondaryAction,
-         ListItemIcon, ListItemText, InputLabel, ListItemAvatar, Collapse, ListSubheader, CircularProgress } from '@material-ui/core';
+         ListItemIcon, ListItemText, InputLabel, ListItemAvatar, 
+         Collapse, ListSubheader, CircularProgress, GridList, GridListTile, GridListTileBar,
+         ListSubhea} from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar'
 import SearchIcon from '@material-ui/icons/Search'
 import Box from '@material-ui/core/Box'
@@ -21,7 +22,8 @@ import PersonIcon from '@material-ui/icons/Person'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import BlockIcon from '@material-ui/icons/Block'
 import {ExpandMore, ExpandLess, ExitToApp, MoreHoriz, 
-        FiberManualRecord, Cake, LocationOn, Wc, Event, Close, Link, AddAPhoto} from '@material-ui/icons'
+        FiberManualRecord, Cake, LocationOn, Wc, Event,
+        Close, Link, AddAPhoto, Favorite} from '@material-ui/icons'
 import { useHistory } from 'react-router-dom'
 import {Tab, Tabs, Snackbar} from '@material-ui/core'
 import {Fade, Modal, Divider,} from '@material-ui/core'
@@ -53,6 +55,18 @@ function TabPanel(props){
         </Typography>
     )
 }
+
+function LikedImage(){
+    return(
+        <Favorite 
+            style={{
+                fill: "#00cdac"
+            }}
+        />
+    )
+}
+
+
 TabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.any.isRequired,
@@ -349,7 +363,26 @@ const useStyles = makeStyles(theme=>({
         }
     },
 
+    gridTileRoot:{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        overflow: 'hidden',
+        backgroundColor: theme.palette.background.paper
+    },
+
+    gridList: {
+        width: 500,
+        height: 450
+    },
+
+    favIcon: {
+        color: 'rgba(255,255,255,0.54)'
+    }
+
 }))
+
+
 
 export default function UserPage(props){
     const classes = useStyles();
@@ -403,6 +436,18 @@ export default function UserPage(props){
     const [editProfileSnackbar, setEditProfileSnackbar] = useState(false);
     const [errorEditProfileSnackBar, setErrorEditProfileSnackbar] = useState(false);
 
+    const [imageLiked, setImageLiked] = useState(false);
+    const [likedColor, setLikedColor] = useState("");
+
+    const handleImageLiked = () => {
+        setImageLiked(!imageLiked)
+
+        if(imageLiked){
+            setLikedColor("#ff0000")
+        }else{
+            setLikedColor("")
+        }
+    }
     useEffect(()=>{
         let unMounted = false;
         //_isMounted && loadUserData()
@@ -479,6 +524,51 @@ export default function UserPage(props){
         }
 
     },[])//useeffect will only be called when userdata changes
+
+    const tileData = [
+        {
+            img: "https://source.unsplash.com/user/erondu/1600x900",
+            title: "Title",
+            by: username,
+            imageLiked: false,
+            likeIcon: <Favorite/>
+        },
+        {
+            img: "https://source.unsplash.com/weekly?water",
+            title: "Title",
+            by: username,
+            imageLiked: false,
+            likeIcon: <Favorite/>
+        },
+        {
+            img: "https://source.unsplash.com/weekly?road",
+            title: "Title",
+            by: username,
+            imageLiked: false,
+            likeIcon: <Favorite/>
+        },
+        {
+            img: "https://source.unsplash.com/weekly?city",
+            title: "Title",
+            by: username,
+            imageLiked: false,
+            likeIcon: <Favorite/>
+        },
+        {
+            img: "https://source.unsplash.com/weekly?sky",
+            title: "Title",
+            by: username,
+            imageLiked: false,
+            likeIcon: <Favorite/>
+        },
+        {
+            img: "https://source.unsplash.com/weekly?game",
+            title: "Title",
+            by: username,
+            imageLiked: false,
+            likeIcon: <Favorite/>
+        }
+    ]
 
     const onLogout = (e) =>{
         e.preventDefault();
@@ -1340,7 +1430,81 @@ export default function UserPage(props){
                                 </Typography>
                             </TabPanel>
                             <TabPanel value={currentTab} index={1}>
-                                Item Two
+                                <Box>
+                                    <div className={classes.gridTileRoot} style={{width:'100%', height: '100%'}}>
+                                        <GridList cellHeight={180} className={classes.gridList} style={{ width:"100%", height:"100%"}}>
+                                            <GridListTile key="Subheader" cols={2} style={{height: 'auto'}}>
+                                                <ListSubheader component="div" style={{paddingLeft:"0", marginLeft:"0"}}>
+                                                    <Box>
+                                                        <Typography component="div">
+                                                            <Box
+                                                                fontWeight="fontWeightRegular"
+                                                                fontSize="1.5vw"
+                                                                fontStyle={bioStyle}
+                                                                style={{color:"#000000", wordWrap:"break-word",}}
+                                                                p={0} m={0}
+                                                                fontFamily='Segoe UI Symbol'
+                                                            >
+                                                                {`March`}
+                                                            </Box>
+                                                        </Typography>
+                                                    </Box> 
+                                                </ListSubheader>
+                                            </GridListTile>
+                                            {tileData.map((tile)=>(
+                                                <GridListTile key={tile.img}>
+                                                    <img src={tile.img} alt={tile.title}/>
+                                                    <GridListTileBar
+                                                        title={
+                                                            <Box>
+                                                            <Typography component="div">
+                                                                <Box
+                                                                    fontWeight="fontWeightBold"
+                                                                    fontSize="1vw"
+                                                                    fontStyle={bioStyle}
+                                                                    style={{color:"#ffffff", wordWrap:"break-word",}}
+                                                                    p={0} m={0}
+                                                                    fontFamily='Segoe UI Symbol'
+                                                                >
+                                                                    {tile.title}
+                                                                </Box>
+                                                            </Typography>
+                                                            </Box>                                                            
+                                                        }
+                                                        subtitle={
+                                                            <Box>
+                                                                <Typography component="div">
+                                                                <Box
+                                                                    fontWeight="fontWeightLight"
+                                                                    fontSize="0.7vw"
+                                                                    fontStyle={bioStyle}
+                                                                    style={{color:"#ffffff", wordWrap:"break-word",}}
+                                                                    p={0} m={0}
+                                                                    fontFamily='Segoe UI Symbol'
+                                                                >
+                                                                    {tile.by}
+                                                                </Box>
+                                                                </Typography>
+                                                            </Box>                
+                                                            }
+                                                        actionIcon={
+                                                            <IconButton aria-label={`like`} className={classes.favIcon} 
+                                                            onClick={()=>{
+                                                                tile.imageLiked = !tile.imageLiked
+                                                                console.log(tile.imageLiked)
+                                                                if(tile.imageLiked){
+                                                                    tile.likeIcon = <LikedImage/>
+                                                                }
+                                                            }}>
+                                                                {tile.likeIcon}
+                                                            </IconButton>
+                                                        }
+                                                    />
+                                                </GridListTile>
+                                            ))}
+                                        </GridList>
+                                    </div>
+                                </Box>
                             </TabPanel>
                             <TabPanel value={currentTab} index={2}>
                                 Item Three
