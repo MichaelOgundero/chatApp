@@ -1449,7 +1449,11 @@ export default function UserPage(props){
                                                 </ListSubheader>
                                             </GridListTile>
                                             {tileData.map((tile)=>(
-                                                <GridListTile key={tile.img}>
+                                                <GridListTile key={tile.img} 
+                                                style={{
+                                                    cursor:"pointer"
+                                                }}
+                                                >
                                                     <img src={tile.img} alt={tile.title}/>
                                                     <GridListTileBar
                                                         title={
