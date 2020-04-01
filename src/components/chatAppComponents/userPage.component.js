@@ -175,7 +175,7 @@ const useStyles = makeStyles(theme=>({
     },
     gridOne:{
         //background: '#ff1100',
-        background:'linear-gradient(45deg, #02aab0 30%, #00cdac 90%)',
+        background:'linear-gradient(45deg, #29323c 30%, #485563 90%)', 
 
         //border: "1px solid black",
     },
@@ -772,7 +772,7 @@ export default function UserPage(props){
                 <Grid item xs={false} sm={3} md={3} lg={2} xl={2} className={classes.gridOne}>
                     <Container style={{margin:0,padding:0}}>
                         <div className={classes.paper}>
-                            <div style={{minWidth:'100%', minHeight:'100%'}}>
+                            <div style={{minWidth:'100%', minHeight:'100%',}}>
                                 <Box m={4} className={classes.logoArea}>
                                     <Typography variant='h5' className={classes.appName}>
                                         {"ChatApp"}
@@ -950,10 +950,9 @@ export default function UserPage(props){
                                     </div>
                                 </Box>
                             </div>
-                            <div style={{minWidth:'100%', minHeight:'100%'}}>
+                            <div style={{minWidth:'100%', minHeight:'20%',background:'linear-gradient(45deg, #02aab0 30%, #00cdac 90%)'}}>
                                 <Box m={.25} p={.25}></Box>
                             </div>
-
                         </div>
                     </Container>
                 </Grid>
@@ -1485,17 +1484,17 @@ export default function UserPage(props){
                                                                 </Typography>
                                                             </Box>                
                                                             }
-                                                        actionIcon={
-                                                            <IconButton aria-label={`like`} className={classes.favIcon} 
-                                                            onClick={()=>{
+                                                            actionIcon={
+                                                                <IconButton aria-label={`like`} className={classes.favIcon} 
+                                                                    onClick={()=>{
                                                                 //setLikeIcon(tile.notLikedIcon)
-                                                                tile.imageLiked = !tile.imageLiked
-                                                                console.log(tile.imageLiked)
+                                                                    tile.imageLiked = !tile.imageLiked
+                                                                    console.log(tile.imageLiked)
                                                                
-                                                            }}>
-                                                                {tile.imageLiked ? tile.imageLiked : tile.notLikedIcon}
-                                                            </IconButton>
-                                                        }
+                                                                }}>
+                                                                    {tile.imageLiked ? tile.imageLiked : tile.notLikedIcon}
+                                                                </IconButton>
+                                                            }
                                                     />
                                                 </GridListTile>
                                             ))}
