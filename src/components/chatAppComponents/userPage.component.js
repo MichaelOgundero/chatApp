@@ -201,7 +201,7 @@ const useStyles = makeStyles(theme=>({
     },
     appName:{
         fontWeight:'bold',
-        fontSize: '3vw',
+        fontSize: '2.4vw',
         color: '#ffffff',
         //marginLeft:'20px'
     },
@@ -772,7 +772,7 @@ export default function UserPage(props){
                 <Grid item xs={false} sm={3} md={3} lg={2} xl={2} className={classes.gridOne}>
                     <Container style={{margin:0,padding:0}}>
                         <div className={classes.paper}>
-                            <div style={{minWidth:'100%', minHeight:'100%',}}>
+                            <div style={{minWidth:'100%', minHeight:'100%',background:'linear-gradient(45deg, #02aab0 30%, #00cdac 90%)'}}>
                                 <Box m={4} className={classes.logoArea}>
                                     <Typography variant='h5' className={classes.appName}>
                                         {"ChatApp"}
