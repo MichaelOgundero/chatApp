@@ -165,7 +165,8 @@ const useStyles = makeStyles(theme=>({
         //background:'#000000',
         background:'linear-gradient(45deg, #29323c 30%, #485563 90%)', 
         minHeight:"100vh", 
-        minWidth:"100vw"
+        minWidth:"98vw",
+        boxSizing:"border-box",
     },
     root: {
         width: '85vw',
@@ -368,12 +369,13 @@ const useStyles = makeStyles(theme=>({
         flexWrap: 'wrap',
         justifyContent: 'space-around',
         overflow: 'hidden',
-        backgroundColor: theme.palette.background.paper
+        backgroundColor: theme.palette.background.paper,
+    
     },
 
     gridList: {
-        width: 500,
-        height: 450
+        width: "300px",
+        height: "250px"
     },
 
     favIcon: {
@@ -764,7 +766,16 @@ export default function UserPage(props){
 
 
     return(
-        <Container fixed  className={classes.backgroundContainer}>
+        <div style={{
+            height:"100%",
+            width:"100%",
+            overFlowY:"auto",
+            overFlowX: "none",
+            WebkitBoxSizing:"border-box",
+            MozBoxSizing:"border-box",
+            background: "linear-gradient(45deg, #29323c 30%, #485563 90%)"
+        }}>
+        <Container fixed  className={classes.backgroundContainer} >
             <div className={classes.rootDiv}>
             <Grid container spacing={0} component="main" className={classes.root}>
                 <CssBaseline/>
@@ -1413,7 +1424,7 @@ export default function UserPage(props){
                                 </Box>
                             </Box>
                         </div>
-                        <div style={{border:"1px solid white",width:"100%", height:"100%", maxHeight:"100%"}}>
+                        <div style={{border:"1px solid white",width:"100%", height:"100%", maxHeight:"100%"}} >
                             <AntTabs value={currentTab} onChange={handleCurrentTabChange}>
                                 <AntTab label="About" {...a11yProps(0)}/>
                                 <AntTab label ="Photos" {...a11yProps(1)}/>
@@ -1427,9 +1438,9 @@ export default function UserPage(props){
                                 </Typography>
                             </TabPanel>
                             <TabPanel value={currentTab} index={1}>
-                                <Box>
-                                    <div className={classes.gridTileRoot} style={{width:'100%', height: '100%'}}>
-                                        <GridList cellHeight={180} className={classes.gridList} style={{ width:"100%", height:"100%"}}>
+                                <Box style={{border:"1px solid red", padding:"0", margin:"0"}} p={0} m={0}>
+                                    <div className={classes.gridTileRoot} style={{ padding:"0", margin:"0"}}>
+                                        <GridList cellHeight={180} className={classes.gridList} style={{width:'100%', height:"100%"}}>
                                             <GridListTile key="Subheader" cols={2} style={{height: 'auto'}}>
                                                 <ListSubheader component="div" style={{paddingLeft:"0", marginLeft:"0"}}>
                                                     <Box>
@@ -1441,6 +1452,7 @@ export default function UserPage(props){
                                                                 style={{color:"#000000", wordWrap:"break-word",}}
                                                                 p={0} m={0}
                                                                 fontFamily='Segoe UI Symbol'
+                                                                
                                                             >
                                                                 {`March`}
                                                             </Box>
@@ -1451,10 +1463,11 @@ export default function UserPage(props){
                                             {tileData.map((tile)=>(
                                                 <GridListTile key={tile.img} 
                                                 style={{
-                                                    cursor:"pointer"
+                                                    cursor:"pointer",
                                                 }}
                                                 >
-                                                    <img src={tile.img} alt={tile.title}/>
+                                                    <div style={{WebkitBoxSizing: "border-box", MozBoxSizing:"border-box", boxSizing:"border-box"}}>
+                                                    <img src={tile.img} alt={tile.title} style={{padding:0}}/>
                                                     <GridListTileBar
                                                         title={
                                                             <Box>
@@ -1500,6 +1513,9 @@ export default function UserPage(props){
                                                                 </IconButton>
                                                             }
                                                     />
+
+                                                    </div>
+                                                    
                                                 </GridListTile>
                                             ))}
                                         </GridList>
@@ -1580,5 +1596,6 @@ export default function UserPage(props){
                 </Alert>
             </Snackbar>
         </Container>
+        </div>
     )
 }
