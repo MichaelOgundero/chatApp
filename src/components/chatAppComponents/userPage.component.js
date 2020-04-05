@@ -26,7 +26,7 @@ import {ExpandMore, ExpandLess, ExitToApp, MoreHoriz,
         Close, Link, AddAPhoto, Favorite} from '@material-ui/icons'
 import { useHistory } from 'react-router-dom'
 import {Tab, Tabs, Snackbar} from '@material-ui/core'
-import {Fade, Modal, Divider,} from '@material-ui/core'
+import {Fade, Modal, Divider, Tooltip} from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
 import {
     MuiPickersUtilsProvider,
@@ -34,8 +34,9 @@ import {
 } from '@material-ui/pickers'
 import 'date-fns'
 import DateFnsUtils from '@date-io/date-fns'
-import profilePic from "../../assets/profileImage.jpg"
-import uploadImage from '../../assets/uploadImage.png'
+import profilePic from "../../assets/images/profileImage.jpg"
+import profilePicMale from "../../assets/images/profileImageMale.jpg"
+import uploadImage from '../../assets/icons/uploadImage.png'
 import {Link as RouterLink} from 'react-router-dom'
 
 
@@ -467,7 +468,7 @@ export default function UserPage(props){
 
                     setJoined(userData[0].joined)
 
-                    if(userData[0].dateOfBirth === null){
+                    if(userData[0].dateOfBirth==="" || userData[0].dateOfBirth === null || userData[0].dateOfBirth === undefined){
                         setDobStyle('oblique')
                         setDOB("not set")
                     }else{
@@ -476,7 +477,7 @@ export default function UserPage(props){
                         setDobEdit(new Date(userData[0].dateOfBirth));
                     }
 
-                    if(userData[0].bio === ""){
+                    if(userData[0].bio === "" || userData[0].bio === undefined || userData[0].bio===null){
                         setBioStyle('oblique')
                         setBio("not set")
                     }else{
@@ -484,7 +485,7 @@ export default function UserPage(props){
                         setBio(userData[0].bio)
                         setBioEdit(userData[0].bio)
                     }
-                    if(userData[0].sex === ""){
+                    if(userData[0].sex === "" || userData[0].sex === undefined || userData[0].sex===null){
                         setSexStyle('oblique')
                         setSex("not set")
                     }else{
@@ -492,7 +493,7 @@ export default function UserPage(props){
                         setSex(userData[0].sex)
                         setSexEdit(userData[0].sex)
                     }
-                    if(userData[0].location === ""){
+                    if(userData[0].location === "" || userData[0].location === undefined || userData[0].location===null){
                         setLocationStyle('oblique')
                         setLocation("not set")
                     }else{
@@ -500,13 +501,18 @@ export default function UserPage(props){
                         setLocation(userData[0].location)
                         setLocationEdit(userData[0].location)
                     }
-                    if(userData[0].website === ""){
+                    if(userData[0].website === "" || userData[0].website === undefined || userData[0].website===null){
                         setWebsiteStyle('oblique')
                         setWebsite("not set")
                     }else{
                         setWebsiteStyle('normal')
                         setWebsite(userData[0].website)
                         setWebsiteEdit(userData[0].website)
+                    }
+
+                    //temporary
+                    if(userData[0].firstName==="Dan"){
+                        setProfilePicture(profilePicMale)
                     }
 
                     setIsLoading(false)
@@ -637,35 +643,35 @@ export default function UserPage(props){
                 setModalStatus(false)
                 setName(nameEdit)
         
-                if(bioEdit === ""){
+                if(bioEdit === "" || bioEdit===undefined || bioEdit===null){
                     setBioStyle('oblique')
                     setBio("not set")
                 }else{
                     setBioStyle('normal')
                     setBio(bioEdit)
                 }
-                if(sexEdit === ""){
+                if(sexEdit === "" || sexEdit===undefined || sexEdit===null){
                     setSexStyle('obllique')
                     setSex('not set')
                 }else{
                     setSexStyle('normal')
                     setSex(sexEdit)
                 }
-                if(locationEdit === ""){
+                if(locationEdit === "" || locationEdit===undefined || locationEdit===null){
                     setLocationStyle('oblique')
                     setLocation('not set')
                 }else{
                     setLocationStyle('normal')
                     setLocation(locationEdit)
                 }
-                if(websiteEdit===""){
+                if(websiteEdit==="" || websiteEdit===undefined || websiteEdit===null){
                     setWebsiteStyle('oblique')
                     setWebsite('not set')
                 }else{
                     setWebsiteStyle('normal')
                     setWebsite(websiteEdit)
                 }
-                if(dobEdit===""){
+                if(dobEdit==="" || dobEdit===null || dobEdit===undefined){
                     setDobStyle('oblique')
                     setDOB('not set')
                 }else{
@@ -675,7 +681,9 @@ export default function UserPage(props){
                 
                 //console.log(dobEdit)
 
-                setProfilePicture(profilePictureEdit);                
+
+                    setProfilePicture(profilePictureEdit);                
+                
             })
             .catch(err=>{
                 setErrorEditProfileSnackbar(true)
@@ -1070,7 +1078,7 @@ export default function UserPage(props){
                                 <Box className={classes.profilePic} style={{width:"30%",height:"100%",}}> 
                                     <Box display="flex" alignItems="center"  style={{ width:"100%", height:"100%"}}>
                                         <div style={{width:"85%", height:"85%", margin:"0 auto"}}>
-                                            <Avatar alt="profile Image" src={profilePic} style={{width:"12.5vw", height:"12.5vw", maxWidth:"200px", maxHeight:"200px"}}/>
+                                            <Avatar alt="profile Image" src={profilePicture} style={{width:"12.5vw", height:"12.5vw", maxWidth:"200px", maxHeight:"200px"}}/>
                                         </div>
                                     </Box>
                                     <Box style={{ width:"100%", height:"15%",}}>
@@ -1176,9 +1184,11 @@ export default function UserPage(props){
                                     <Box ml={1} mr={1} mt={1} pt={0} pl={1} pr={1}>
                                         <div style={{width:"100%", }} >
                                             <Box display="flex" flexDirection="row" style={{margin:"0 !important", padding:"0 !important"}}>
+                                                <Tooltip title="birthday">
                                                 <Box style={{margin:0, padding:0}}>
                                                     <Cake fontSize="small" style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
                                                 </Box>
+                                                </Tooltip>
                                                 <Typography>
                                                     <Box
                                                         fontWeight="fontWeightLight"
@@ -1191,10 +1201,11 @@ export default function UserPage(props){
                                                     </Box>
                                                 </Typography>
 
-
+                                                <Tooltip title="gender">
                                                 <Box style={{margin:0, padding:0}}>
                                                 <Wc fontSize="small" style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
                                                 </Box>
+                                                </Tooltip>
                                                 <Typography>
                                                     <Box
                                                         fontWeight="fontWeightLight"
@@ -1207,9 +1218,11 @@ export default function UserPage(props){
                                                 </Box>
                                                 </Typography>
 
+                                                <Tooltip title="location">
                                                 <Box style={{margin:0, padding:0}}>
                                                     <LocationOn fontSize="small" style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
                                                 </Box>
+                                                </Tooltip>
                                                 <Typography>
                                                     <Box
                                                         fontWeight="fontWeightLight"
@@ -1229,9 +1242,11 @@ export default function UserPage(props){
                                         <div style={{width:"100%",}} >
                                             <Box display="flex" flexDirection="row" style={{margin:"0 !important", padding:"0 !important"}}>
 
+                                                <Tooltip title="joined">
                                                 <Box style={{margin:0, padding:0}}>
                                                     <Event fontSize="small" style={{margin:0,padding:0, borderCollapse:"collapse", fill:"#696969"}}/>
                                                 </Box>
+                                                </Tooltip>
                                                 <Typography>
                                                     <Box
                                                         fontWeight="fontWeightLight"
@@ -1243,9 +1258,11 @@ export default function UserPage(props){
                                                     </Box>
                                                 </Typography>
                                                 
+                                                <Tooltip title="website">
                                                 <Box style={{marginTop:"2px"}}>
                                                     <Link fontSize="small" style={{ borderCollapse:"collapse", fill:"#696969"}}/>
                                                 </Box>
+                                                </Tooltip>
                                                 <Typography>
                                                     <Box
                                                         fontWeight="fontWeightLight"
@@ -1381,7 +1398,7 @@ export default function UserPage(props){
                                                                             </div>
                                                                         }
                                                                     >
-                                                                        <Avatar alt="profile Image" src={profilePic}
+                                                                        <Avatar alt="profile Image" src={profilePicture}
                                                                             style={{width:"200px", 
                                                                                 height:"200px", 
                                                                                 maxWidth:"200px",
