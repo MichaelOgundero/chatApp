@@ -36,6 +36,8 @@ import 'date-fns'
 import DateFnsUtils from '@date-io/date-fns'
 import profilePic from "../../assets/profileImage.jpg"
 import uploadImage from '../../assets/uploadImage.png'
+import {Link as RouterLink} from 'react-router-dom'
+
 
 
 
@@ -439,8 +441,9 @@ export default function UserPage(props){
     const [errorEditProfileSnackBar, setErrorEditProfileSnackbar] = useState(false);
 
 
-    const [likeIcon, setLikeIcon] = useState("");
-
+    const [likeIcon, setLikeIcon] = useState(<Favorite/>);
+    const [mockLike, setMockLike] = useState(<Favorite/>)
+    const [status, setStatus] = useState(false)
 
     useEffect(()=>{
         let unMounted = false;
@@ -526,7 +529,8 @@ export default function UserPage(props){
             by: username,
             imageLiked: false,
             likeIcon: <LikedImage/>,
-            notLikedIcon: <Favorite/>
+            notLikedIcon: <Favorite/>,
+            mockLike: mockLike
         },
         {
             img: "https://source.unsplash.com/weekly?water",
@@ -534,7 +538,8 @@ export default function UserPage(props){
             by: username,
             imageLiked: false,
             likeIcon: <LikedImage/>,
-            notLikedIcon: <Favorite/>
+            notLikedIcon: <Favorite/>,
+            mockLike: mockLike
         },
         {
             img: "https://source.unsplash.com/weekly?road",
@@ -542,7 +547,8 @@ export default function UserPage(props){
             by: username,
             imageLiked: false,
             likeIcon: <LikedImage/>,
-            notLikedIcon: <Favorite/>
+            notLikedIcon: <Favorite/>,
+            mockLike: mockLike
         },
         {
             img: "https://source.unsplash.com/weekly?city",
@@ -550,7 +556,8 @@ export default function UserPage(props){
             by: username,
             imageLiked: false,
             likeIcon: <LikedImage/>,
-            notLikedIcon: <Favorite/>
+            notLikedIcon: <Favorite/>,
+            mockLike: mockLike
         },
         {
             img: "https://source.unsplash.com/weekly?sky",
@@ -558,7 +565,8 @@ export default function UserPage(props){
             by: username,
             imageLiked: false,
             likeIcon: <LikedImage/>,
-            notLikedIcon: <Favorite/>
+            notLikedIcon: <Favorite/>,
+            mockLike: mockLike
         },
         {
             img: "https://source.unsplash.com/weekly?game",
@@ -566,7 +574,8 @@ export default function UserPage(props){
             by: username,
             imageLiked: false,
             likeIcon: <LikedImage/>,
-            notLikedIcon: <Favorite/>
+            notLikedIcon: <Favorite/>,
+            mockLike: mockLike
         }
     ]
 
@@ -704,6 +713,88 @@ export default function UserPage(props){
 
     const handleUploadImage = () => {
         uploadRef.current.click();
+    }
+
+    const userPhotos = () =>{
+        let photos = []
+
+        
+      
+        for(let i=0;i<tileData.length;i++){
+
+         photos.push(
+            <GridListTile key={i} 
+            style={{
+                cursor:"pointer",
+            }}
+            >
+                <div style={{WebkitBoxSizing: "border-box", MozBoxSizing:"border-box", boxSizing:"border-box"}}>
+                <img src={tileData[i].img} alt={tileData[i].title} style={{padding:0}}/>
+                <GridListTileBar
+                    title={
+                        <Box>
+                        <Typography component="div">
+                            <Box
+                                fontWeight="fontWeightBold"
+                                fontSize="1vw"
+                                fontStyle={bioStyle}
+                                style={{color:"#ffffff", wordWrap:"break-word",}}
+                                p={0} m={0}
+                                fontFamily='Segoe UI Symbol'
+                            >
+                                {tileData[i].title}
+                            </Box>
+                        </Typography>
+                        </Box>                                                            
+                    }
+                    subtitle={
+                        <Box>
+                            <Typography component="div">
+                            <Box
+                                fontWeight="fontWeightLight"
+                                fontSize="0.7vw"
+                                fontStyle={bioStyle}
+                                style={{color:"#ffffff", wordWrap:"break-word",}}
+                                p={0} m={0}
+                                fontFamily='Segoe UI Symbol'
+                            >
+                                {tileData[i].by}
+                            </Box>
+                            </Typography>
+                        </Box>                
+                        }
+                        actionIcon={
+                            
+                            <IconButton aria-label={`like`} className={classes.favIcon} 
+                                onClick={()=>{
+                                setStatus(!status)
+                                tileData[i]["smn"] = status
+
+                                if(tileData[i].smn){
+                                    
+                                }
+
+                                /*tileData[i].imageLiked = !tileData[i].imageLiked
+                                
+                                if(tileData[i].imageLiked){
+                                    console.log(tileData[i].imageLiked)
+                                    tileData[i]["smn"] = likeIcon
+                                    setLikeIcon(<LikedImage/>)
+                                    console.log(tileData[i]["smn"])
+                                    console.log(tileData[i+1]["smn"])
+                                }else{
+                                    //console.log(tileData[i].imageLiked)
+                                }*/
+                            }}>
+                                {tileData[i].mockLike}
+                            </IconButton>
+                        }
+                />
+                </div>   
+            </GridListTile>
+         )
+        }
+        return photos
     }
 
     function formRow(){
@@ -860,7 +951,10 @@ export default function UserPage(props){
                                         <ListItemIcon>
                                             <EmailIcon style={{fill:"white"}}/>
                                         </ListItemIcon>
-                                        <ListItemText primary={
+                                        <ListItemText onClick={()=>{
+                                               history.push(`/messages/${props.match.params.user}`)
+                                            }} 
+                                            primary={
                                             <Typography variant='h5' className={classes.contentText}>
                                                 {"Messages"}
                                             </Typography>
@@ -1438,7 +1532,7 @@ export default function UserPage(props){
                                 </Typography>
                             </TabPanel>
                             <TabPanel value={currentTab} index={1}>
-                                <Box style={{border:"1px solid red", padding:"0", margin:"0"}} p={0} m={0}>
+                                <Box style={{ padding:"0", margin:"0"}} p={0} m={0}>
                                     <div className={classes.gridTileRoot} style={{ padding:"0", margin:"0"}}>
                                         <GridList cellHeight={180} className={classes.gridList} style={{width:'100%', height:"100%"}}>
                                             <GridListTile key="Subheader" cols={2} style={{height: 'auto'}}>
@@ -1460,64 +1554,7 @@ export default function UserPage(props){
                                                     </Box> 
                                                 </ListSubheader>
                                             </GridListTile>
-                                            {tileData.map((tile)=>(
-                                                <GridListTile key={tile.img} 
-                                                style={{
-                                                    cursor:"pointer",
-                                                }}
-                                                >
-                                                    <div style={{WebkitBoxSizing: "border-box", MozBoxSizing:"border-box", boxSizing:"border-box"}}>
-                                                    <img src={tile.img} alt={tile.title} style={{padding:0}}/>
-                                                    <GridListTileBar
-                                                        title={
-                                                            <Box>
-                                                            <Typography component="div">
-                                                                <Box
-                                                                    fontWeight="fontWeightBold"
-                                                                    fontSize="1vw"
-                                                                    fontStyle={bioStyle}
-                                                                    style={{color:"#ffffff", wordWrap:"break-word",}}
-                                                                    p={0} m={0}
-                                                                    fontFamily='Segoe UI Symbol'
-                                                                >
-                                                                    {tile.title}
-                                                                </Box>
-                                                            </Typography>
-                                                            </Box>                                                            
-                                                        }
-                                                        subtitle={
-                                                            <Box>
-                                                                <Typography component="div">
-                                                                <Box
-                                                                    fontWeight="fontWeightLight"
-                                                                    fontSize="0.7vw"
-                                                                    fontStyle={bioStyle}
-                                                                    style={{color:"#ffffff", wordWrap:"break-word",}}
-                                                                    p={0} m={0}
-                                                                    fontFamily='Segoe UI Symbol'
-                                                                >
-                                                                    {tile.by}
-                                                                </Box>
-                                                                </Typography>
-                                                            </Box>                
-                                                            }
-                                                            actionIcon={
-                                                                <IconButton aria-label={`like`} className={classes.favIcon} 
-                                                                    onClick={()=>{
-                                                                //setLikeIcon(tile.notLikedIcon)
-                                                                    tile.imageLiked = !tile.imageLiked
-                                                                    console.log(tile.imageLiked)
-                                                               
-                                                                }}>
-                                                                    {tile.imageLiked ? tile.imageLiked : tile.notLikedIcon}
-                                                                </IconButton>
-                                                            }
-                                                    />
-
-                                                    </div>
-                                                    
-                                                </GridListTile>
-                                            ))}
+                                            {userPhotos()}
                                         </GridList>
                                     </div>
                                 </Box>
