@@ -37,6 +37,7 @@ import DateFnsUtils from '@date-io/date-fns'
 import profilePic from "../../assets/images/profileImage.jpg"
 import profilePicMale from "../../assets/images/profileImageMale.jpg"
 import uploadImage from '../../assets/icons/uploadImage.png'
+import letMeIn from '../../assets/gifs/letMeInGif.gif'
 import {Link as RouterLink} from 'react-router-dom'
 
 
@@ -398,6 +399,8 @@ export default function UserPage(props){
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [backdropStatus, setBackdropStatus] = useState(true);
+    const [forbiddenError, setForbiddenError] = useState(false);
+
     
     const [currentStatus, setCurrentStatus] = useState(1);
     const [currentTab, setCurrentTab] = useState(0);
@@ -522,7 +525,11 @@ export default function UserPage(props){
                     console.log(userData)
                 }
              })
-             .catch(err=>console.log(err))
+             .catch(err=>{
+                 if(err.response.status===403 || err.response.data==="Forbidden"){//NEEDS WORK, error if no token
+                    setForbiddenError(true)
+                 }
+             })
 
         return ()=>{
             unMounted = true;
@@ -858,6 +865,45 @@ export default function UserPage(props){
 
     if(isLoading){
         console.log("loading")
+
+        if(forbiddenError){
+            return(
+                <div style={{width:"100vw", height:"100vh",background: 'linear-gradient(45deg, #02aab0 30%, #00cdac 90%)'}}>
+                
+                <div style={{margin:"0 auto", width:"700px", height:"350px", background:"white"}}>
+                    <Box display="flex" justifyContent="center" style={{}}>
+                        <Typography component="div">
+                            <Box
+                                fontWeight="fontWeightBold"
+                                fontSize="2vw"
+                                style={{color:"#696969", wordWrap:"break-word"}}
+                                fontFamily='Segoe UI Symbol'>
+
+                                   Error 403 - Forbidden: Acces is Denied
+                            </Box>
+                        </Typography>
+                    </Box>
+                    <Divider variant="fullWidth"/>
+                    <Box  display="flex" justifyContent="center" p={1} mt={1} style={{}}>
+                        <Typography component="div">
+                            <Box
+                                fontWeight="fontWeightBold"
+                                fontSize="1vw"
+                                style={{color:"#696969", wordWrap:"break-word"}}
+                                fontFamily='Segoe UI Symbol'>
+
+                                   You dont have permission to view this page. You either have to be logged in or a registered user to acces this page
+                            </Box>
+                        </Typography>
+                    </Box>
+                    <Box  display="flex" justifyContent="center" p={1} mt={1} style={{}}>
+                        <img src={letMeIn} alt="let me in" style={{width:"300px", height:"169px"}}/>
+                    </Box>
+                </div>
+                </div>
+            )
+        }
+
         return(
             <Backdrop className={classes.backdrop} open={backdropStatus}>
                 <CircularProgress color="inherit" />
