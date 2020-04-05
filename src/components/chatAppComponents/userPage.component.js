@@ -513,6 +513,8 @@ export default function UserPage(props){
                     //temporary
                     if(userData[0].firstName==="Dan"){
                         setProfilePicture(profilePicMale)
+                    }else{
+                        setProfilePicture(profilePic)
                     }
 
                     setIsLoading(false)
