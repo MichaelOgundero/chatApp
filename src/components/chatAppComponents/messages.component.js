@@ -10,11 +10,13 @@ const useStyles = makeStyles(theme=>({
 
 }))
 
-export default function Messages(){
+export default function Messages(props){
     const classes = useStyles();
     const history = useHistory();
 
-
+    useEffect(()=>{
+        console.log(props.match.params.user)
+    })
 
     return(
         <h3>Message component</h3>

@@ -186,10 +186,11 @@ const useStyles = makeStyles(theme=>({
     },
     gridTwo:{
         //border: '1px solid yellow',
-        background:"black"
+        background:"white"
     },
     gridThree:{
-        border: '1px solid red',
+        //border: '1px solid red',
+        background:"#263031"
     },   
      paper: {
          margin:theme.spacing(0),
@@ -235,10 +236,22 @@ const useStyles = makeStyles(theme=>({
         '& label.Mui-focused': {
             color: '#ffffff',
           },
-          '& .MuiInput-underline:after': {
-            borderBottomColor: '#ffffff',
-          },
-        width:"100%"  
+
+        '& .MuiOutlinedInput-root':{
+            ['& fieldset']:{
+                borderColor: "#00cdac !important"
+
+            }
+        },
+        '&:hover fieldset':{
+            borderColor:"#00cdac !important"
+        },
+
+        width:"100%" ,
+        ['& fieldset']:{
+            borderRadius: "45px",
+            border:"2px solid  #00cdac",
+        }
 
     },
     editProfile:{
@@ -270,7 +283,7 @@ const useStyles = makeStyles(theme=>({
 
     inputColor:{
         color:"white",
-        borderBottom:"2px solid white"
+        //borderBottom:"2px solid white"
     },
     activeFriends:{
         color: "white",
@@ -1634,26 +1647,34 @@ export default function UserPage(props){
                 <Hidden smDown>
                 <Grid item xs={false} sm={false} md={3} lg={3} xl={3} className={classes.gridThree}>
                     <Container style={{margin:0,padding:0}}>
-                    <div style={{minWidth:'100%', minHeight:'100%', background:"#263031"}}>
+                    <div style={{minWidth:'100%', minHeight:'100%'}}>
                                 <List>
                                     <ListItem>
+                                    <Box>
                                     <TextField
-                                        label="Search"
-                                        variant="standard"
+                                        placeholder="Search"
+                                        variant="outlined"
+                                        size="small"
                                         className={classes.labelWhite}
                                         InputProps={{
+                                            style:{
+                                                fontFamily: "Segoe UI Symbol",
+                                                fontWeight: "bolder",
+                                                color:"#ffffff"
+                                            },
                                             className:classes.inputColor,
                                             endAdornment: (
                                                 <InputAdornment position="end">
                                                     <IconButton
                                                         edge="end"
                                                     >
-                                                        <SearchIcon style={{fill:"white"}}/>
+                                                        <SearchIcon style={{fill:"#00cdac"}}/>
                                                     </IconButton>
                                                 </InputAdornment>
                                             )
                                         }}
                                     />
+                                    </Box>
                                     </ListItem>
                                 </List>
                             </div>
