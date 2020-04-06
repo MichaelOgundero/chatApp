@@ -21,10 +21,12 @@ connection.once('open', ()=>{
 //we have to require the files before we use them
 
 const authenticationRouter = require('./routes/authentication');
-const userPage = require('./routes/user');
+const userRouter = require('./routes/user');
+const searchRouter = require('./routes/search')
 
 app.use('/authentication', authenticationRouter);
-app.use('/user', userPage);
+app.use('/user', userRouter);
+app.use('/search', searchRouter)
 
 
 app.listen(port, ()=>{
