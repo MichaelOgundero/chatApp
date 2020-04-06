@@ -397,6 +397,12 @@ const useStyles = makeStyles(theme=>({
 
     favIcon: {
         color: 'rgba(255,255,255,0.54)'
+    },
+
+    dividerColor:{
+            "& .MuiDivider-root":{
+                backgroundColor:"white"
+            }
     }
 
 }))
@@ -409,6 +415,7 @@ export default function UserPage(props){
     const uploadRef = useRef(null);
 
     const [userData, setUserData] = useState([])
+    const [searchResults, setSearchResults] = useState([])
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [backdropStatus, setBackdropStatus] = useState(true);
@@ -461,6 +468,8 @@ export default function UserPage(props){
     const [likeIcon, setLikeIcon] = useState(<Favorite/>);
     const [mockLike, setMockLike] = useState(<Favorite/>)
     const [status, setStatus] = useState(false)
+
+    const [searchValue, setSearchValue] = useState("")
 
     useEffect(()=>{
         let unMounted = false;
@@ -549,6 +558,24 @@ export default function UserPage(props){
         }
 
     },[])//useeffect will only be called when userdata changes
+
+    /*const searchResults=[
+        {
+            firstName: "Dan",
+            lastName: "Ackerman",
+            username: "righteousSpaghetti"
+        },
+        {
+            firstName: "Dan",
+            lastName: "Ackerman",
+            username: "righteousSpaghetti"
+        },
+        {
+            firstName: "Dan",
+            lastName: "Ackerman",
+            username: "righteousSpaghetti"
+        },
+    ]*/
 
     const tileData = [
         {
@@ -743,6 +770,18 @@ export default function UserPage(props){
 
     const handleUploadImage = () => {
         uploadRef.current.click();
+    }
+
+    const handleSearchChange = (e) => {
+        setSearchValue(e.target.value)
+        console.log(e.target.value)
+        if(e.target.value!==""&&e.target.value!==null&&e.target.value!==undefined){
+            axios.get(`http://localhost:5000/search/findUser/${e.target.value}`)
+            .then(res=>{
+                console.log(res.data.searchResult)
+                setSearchResults(res.data.searchResult)
+            })
+        }
     }
 
     const userPhotos = () =>{
@@ -1655,6 +1694,8 @@ export default function UserPage(props){
                                         placeholder="Search"
                                         variant="outlined"
                                         size="small"
+                                        value={searchValue}
+                                        onChange={handleSearchChange}
                                         className={classes.labelWhite}
                                         InputProps={{
                                             style:{
@@ -1676,6 +1717,50 @@ export default function UserPage(props){
                                     />
                                     </Box>
                                     </ListItem>
+                                    <Box  width="90%" style={{border:"1px solid #00cdac", borderRadius:"20px", margin:"0 auto"}}>
+                                    {searchResults.map((result, index)=>(
+                                        <div>
+                                        <ListItem style={{cursor:"pointer"}}>
+                                            <ListItemAvatar>
+                                                <Avatar src={profilePicture}/>
+                                            </ListItemAvatar>
+                                            <ListItemText primary={
+                                                <Box display="flex" flexDirection="column" alignItems="flex-start">
+                                                    <Typography component="div">
+                                                        <Box
+                                                            fontWeight="fontWeightBold"
+                                                            fontSize="1vw"
+                                                            style={{ 
+                                                                color:"#ffffff", wordWrap:"break-word",
+                                                                marginBottom:"0px !important", paddingBottom:"0px !important"
+                                                            }}
+                                                            fontFamily='Segoe UI Symbol'
+                                                                
+                                                        >
+                                                                {`${result.firstName} ${result.lastName}`}
+                                                        </Box>
+                                                    </Typography>
+                                                    <Typography component="div">
+                                                        <Box
+                                                            fontWeight="fontWeightLight"
+                                                            fontSize="0.8vw"
+                                                            style={{ 
+                                                                color:"#c2c2c2", wordWrap:"break-word",
+                                                                paddingTop:"0px !important", marginTop:"0px !important"
+                                                            }}
+                                                            fontFamily='Segoe UI Symbol'
+                                                                
+                                                        >
+                                                                {`@${result.username}`}
+                                                        </Box>
+                                                    </Typography>
+                                                </Box>
+                                            }/>
+                                        </ListItem>
+                                        <Divider className={classes.dividerColor} variant="fullWidth"/>
+                                        </div>
+                                    ))}
+                                    </Box>
                                 </List>
                             </div>
                     </Container>
