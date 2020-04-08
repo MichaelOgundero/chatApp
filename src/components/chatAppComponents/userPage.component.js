@@ -403,7 +403,7 @@ const useStyles = makeStyles(theme=>({
             "& .MuiDivider-root":{
                 backgroundColor:"white"
             }
-    }
+    },
 
 }))
 
@@ -470,6 +470,9 @@ export default function UserPage(props){
     const [status, setStatus] = useState(false)
 
     const [searchValue, setSearchValue] = useState("")
+    const [searchBorderColor, setSearchBorderColor] = useState("#263031")
+    const [searchBoxShadow, setSearchBoxShadow] = useState("")
+    const [emptyResult, setEmptyResult] = useState([])
 
     useEffect(()=>{
         let unMounted = false;
@@ -774,13 +777,33 @@ export default function UserPage(props){
 
     const handleSearchChange = (e) => {
         setSearchValue(e.target.value)
+        const emptyResults=[]
         console.log(e.target.value)
         if(e.target.value!==""&&e.target.value!==null&&e.target.value!==undefined){
             axios.get(`http://localhost:5000/search/findUser/${e.target.value}`)
             .then(res=>{
                 console.log(res.data.searchResult)
-                setSearchResults(res.data.searchResult)
+                setSearchBorderColor("#00cdac")
+                setSearchBoxShadow('0 3px 5px 2px rgba(0, 205, 172, .2)')
+                if(res.data.searchResult.length===0){
+                    setSearchResults([])
+                    const emptyData = {
+                        data: "No Results"
+                    }
+                    emptyResults.push(emptyData)
+                    setEmptyResult(emptyResults)
+                }else{
+                    setEmptyResult([])
+                    setSearchResults(res.data.searchResult)
+                }
+                
             })
+            .catch(err=>console.log(err))
+        }
+        if(e.target.value===""){
+            setSearchBorderColor("#263031")
+            setSearchBoxShadow('')
+            setSearchResults([])
         }
     }
 
@@ -1688,9 +1711,10 @@ export default function UserPage(props){
                     <Container style={{margin:0,padding:0}}>
                     <div style={{minWidth:'100%', minHeight:'100%'}}>
                                 <List>
-                                    <ListItem>
+                                    <ListItem key={0}>
                                     <Box>
                                     <TextField
+                                        fullWidth
                                         placeholder="Search"
                                         variant="outlined"
                                         size="small"
@@ -1717,10 +1741,32 @@ export default function UserPage(props){
                                     />
                                     </Box>
                                     </ListItem>
-                                    <Box  width="90%" style={{border:"1px solid #00cdac", borderRadius:"20px", margin:"0 auto"}}>
+                                    <Box width="90%" style={{border:`1px solid ${searchBorderColor}`, borderRadius:"20px", margin:"0 auto", boxShadow:`${searchBoxShadow}`}}>
+                                    {emptyResult.map((result, index)=>(
+                                        <div>
+                                            <ListItem key={index}>
+                                                <Typography component="div">
+                                                        <Box
+                                                            fontWeight="fontWeightBold"
+                                                            fontSize="1.2vw"
+                                                            style={{ 
+                                                                color:"#ffffff", wordWrap:"break-word",
+                                                                marginBottom:"0px !important", paddingBottom:"0px !important",
+                                                                marginLeft:"5vw"
+                                                            }}
+                                                            fontFamily='Segoe UI Symbol'
+                                                                
+                                                        >
+                                                                {`${result.data}`}
+                                                        </Box>
+                                                </Typography>
+                                            </ListItem>
+                                        </div>
+                                    ))}
+                                    
                                     {searchResults.map((result, index)=>(
                                         <div>
-                                        <ListItem style={{cursor:"pointer"}}>
+                                        <ListItem style={{cursor:"pointer"}} key={index}>
                                             <ListItemAvatar>
                                                 <Avatar src={profilePicture}/>
                                             </ListItemAvatar>
