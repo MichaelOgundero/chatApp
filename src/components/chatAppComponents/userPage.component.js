@@ -474,6 +474,8 @@ export default function UserPage(props){
     const [searchBoxShadow, setSearchBoxShadow] = useState("")
     const [emptyResult, setEmptyResult] = useState([])
 
+    
+
     useEffect(()=>{
         let unMounted = false;
         //_isMounted && loadUserData()
@@ -1765,8 +1767,8 @@ export default function UserPage(props){
                                     ))}
                                     
                                     {searchResults.map((result, index)=>(
-                                        <div>
-                                        <ListItem style={{cursor:"pointer"}} key={index}>
+                                        <div onMouseOver={()=>{}}>
+                                        <ListItem style={{cursor:"pointer", background:""}} key={index} >
                                             <ListItemAvatar>
                                                 <Avatar src={profilePicture}/>
                                             </ListItemAvatar>

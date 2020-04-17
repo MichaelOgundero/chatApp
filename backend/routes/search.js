@@ -50,22 +50,43 @@ router.route('/findUser/:searchValue').get((req, res)=>{
         
 })
 
-/*router.route('/history/searchHistory').get((req, res)=>{
-    SearchHistory.aggregate(
-        [
-            {
-                $sort: {_id:-1},
-                $limit: 5 
-            }
-        ],
+router.route('/newSearch').post((req, res)=>{
+    const {searchValue} = req.body;
 
-        (err, docs)=>{
-            res.json({
-                res: docs
-            })
-        }
-    )
-})*/
+    const newSearch = new SearchHistory({
+        searchTerm: searchValue
+    });
+    newSearch.save()
+    .then(()=>res.status(200).json('search saved'))
+    .catch(err=>res.status(400).json('error: '+err))
+
+})
+
+router.route('/searchHistory').get((req, res)=>{
+    SearchHistory.find({},
+                (err, docs)=>{
+                    if(err){
+                        res.status(400).json({
+                            err: err
+                        })
+                    }
+                    const results = []
+                    docs.forEach(element=>{
+                        const result={
+                            term: element.searchTerm
+                        }
+                        results.push(result)
+                    })
+                    res.status(200).json({
+                        searchHistory: results
+                    })
+
+                })
+                 .sort({_id:-1})
+                 .limit(5)
+                 
+                 
+})
 
 
 module.exports = router;
