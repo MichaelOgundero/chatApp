@@ -39,13 +39,6 @@ router.route('/findUser/:searchValue').get((req, res)=>{
             }
         })
         .catch(err=>res.status(400).json("error: "+err))
-    
-    const newSearch = new SearchHistory({
-        searchTerm: searchValue
-    });
-    newSearch.save()
-    .then(()=>res.status(200).json('search saved'))
-    .catch(err=>res.status(400).json('error: '+err))
 
         
 })
@@ -83,9 +76,15 @@ router.route('/searchHistory').get((req, res)=>{
 
                 })
                  .sort({_id:-1})
-                 .limit(5)
-                 
-                 
+                 .limit(5)         
+})
+
+router.route('/clearAll').delete((req, res)=>{
+    SearchHistory.deleteMany({})
+                 .then(()=>{
+                     res.status(200).json({success:"true", message:"search History Cleared"})
+                })
+                .catch(err=>res.status(400).json("error: "+err))
 })
 
 

@@ -23,7 +23,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import BlockIcon from '@material-ui/icons/Block'
 import {ExpandMore, ExpandLess, ExitToApp, MoreHoriz, 
         FiberManualRecord, Cake, LocationOn, Wc, Event,
-        Close, Link, AddAPhoto, Favorite} from '@material-ui/icons'
+        Close, Link, AddAPhoto, Favorite, Clear} from '@material-ui/icons'
 import { useHistory } from 'react-router-dom'
 import {Tab, Tabs, Snackbar} from '@material-ui/core'
 import {Fade, Modal, Divider, Tooltip} from '@material-ui/core'
@@ -381,6 +381,14 @@ const useStyles = makeStyles(theme=>({
         }
     },
 
+    clearAll: {
+        color:"#ffffff",
+        "&:hover":{
+            color:"#00cdac",
+            textDecoration: "underline"
+        }
+    },
+
     gridTileRoot:{
         display: 'flex',
         flexWrap: 'wrap',
@@ -415,7 +423,6 @@ export default function UserPage(props){
     const uploadRef = useRef(null);
 
     const [userData, setUserData] = useState([])
-    const [searchResults, setSearchResults] = useState([])
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [backdropStatus, setBackdropStatus] = useState(true);
@@ -472,7 +479,10 @@ export default function UserPage(props){
     const [searchValue, setSearchValue] = useState("")
     const [searchBorderColor, setSearchBorderColor] = useState("#263031")
     const [searchBoxShadow, setSearchBoxShadow] = useState("")
+    const [searchResults, setSearchResults] = useState([])
     const [emptyResult, setEmptyResult] = useState([])
+    const [recentSearch, setRecentSearch] = useState([])
+    const [recentHeader, setRecentHeader] = useState()
 
     
 
@@ -777,6 +787,19 @@ export default function UserPage(props){
         uploadRef.current.click();
     }
 
+    const clearSearch = () =>{
+        axios.delete("http://localhost:5000/search/clearAll")
+             .then(res=>{
+                 console.log(res)
+                 if(res){
+                     setRecentHeader("")
+                     setRecentSearch([])
+                     setSearchBorderColor("#263031")
+                     setSearchBoxShadow('')
+                 }
+             })
+    }
+
     const handleSearchChange = (e) => {
         setSearchValue(e.target.value)
         const emptyResults=[]
@@ -787,25 +810,120 @@ export default function UserPage(props){
                 console.log(res.data.searchResult)
                 setSearchBorderColor("#00cdac")
                 setSearchBoxShadow('0 3px 5px 2px rgba(0, 205, 172, .2)')
+
                 if(res.data.searchResult.length===0){
+                    setRecentHeader("")
                     setSearchResults([])
+                    setRecentSearch([])
                     const emptyData = {
                         data: "No Results"
                     }
                     emptyResults.push(emptyData)
                     setEmptyResult(emptyResults)
                 }else{
+                    setRecentHeader("")
                     setEmptyResult([])
+                    setRecentSearch([])
                     setSearchResults(res.data.searchResult)
                 }
                 
             })
             .catch(err=>console.log(err))
         }
-        if(e.target.value===""){
-            setSearchBorderColor("#263031")
-            setSearchBoxShadow('')
+        else if(e.target.value===""){
+
+            axios.get('http://localhost:5000/search/searchHistory')
+            .then(res=>{
+                console.log(res.data)
+                setRecentHeader("")
+                setSearchResults([])
+                setEmptyResult([])
+                if(res.data.searchHistory.length===0){
+                    setSearchBorderColor("#263031")
+                    setSearchBoxShadow('')
+                }else{
+                    setSearchBorderColor("#00cdac")
+                    setSearchBoxShadow('0 3px 5px 2px rgba(0, 205, 172, .2)')
+                    setRecentHeader(
+                        <div>
+                        <ListItem>
+                            <ListItemText
+                                primary={
+                                    <div style={{width:"100%"}}>
+                                    <Box display="flex" flexDirection="row">
+                                    <Typography component="div">
+                                        <Box
+                                            fontWeight="fontWeightBold"
+                                            fontSize="1.3vw"
+                                            style={{ 
+                                                color:"#ffffff", wordWrap:"break-word",
+                                                //marginBottom:"0px !important", paddingBottom:"0px !important"
+                                            }}
+                                            fontFamily='Segoe UI Symbol'
+                                                
+                                        >
+                                                {`Recent`}
+                                        </Box>
+                                    </Typography>
+
+                                    <Typography component="div">
+                                        <Box
+                                            className={classes.clearAll}
+                                            onClick={clearSearch}
+                                            fontWeight="fontWeightBold"
+                                            fontSize="0.9vw"
+                                            style={{ 
+                                                marginLeft:"9vw", marginTop:"1vh", cursor:"pointer"
+                                            }}
+                                            fontFamily='Segoe UI Symbol'
+                                                
+                                        >
+                                                {`Clear all`}
+                                        </Box>
+                                    </Typography>
+                                    </Box>
+                                    </div>
+                                }
+                            />
+                        </ListItem>
+                        <Divider className={classes.dividerColor} variant="fullWidth"/>
+                        </div>
+                    )
+                    setRecentSearch(res.data.searchHistory)
+
+
+                }
+            })
+        }else{
+            setSearchBorderColor("#00cdac")
+            setSearchBoxShadow('0 3px 5px 2px rgba(0, 205, 172, .2)')
+            setRecentHeader("")
+            setRecentSearch([])
             setSearchResults([])
+            setEmptyResult([])
+        }
+    }
+
+
+    const handleTextFieldKeyDown = (e) =>{
+        switch(e.key){
+            case 'Enter':
+                onEnter()
+        }
+    }
+
+    const onEnter = () =>{
+        if(searchValue!==null && searchValue!==undefined && searchValue!==""){
+            const valueSearch = {
+                searchValue: searchValue
+            }
+            axios.post('http://localhost:5000/search/newSearch', valueSearch)
+                 .then(res => {
+                     console.log(res)
+                 })
+                 .catch(err=>{
+                     console.log(err)
+                 })
         }
     }
 
@@ -1490,7 +1608,8 @@ export default function UserPage(props){
                                                         <div style={{width:"100%", overflowY:"auto", 
                                                              maxHeight:"60vh", padding:"8px",
                                                              scrollbarColor:"#00cdac #ffffff",
-                                                             scrollbarWidth:"thin"
+                                                             scrollbarWidth:"thin",
+                                                             
                                                              }}
                                                         >
                                                             <Box mt={1} pt={1} mb={1} pb={1} display="flex" alignContent="center"  style={{ width:"100%", height:"100%"}}>
@@ -1712,10 +1831,12 @@ export default function UserPage(props){
                 <Grid item xs={false} sm={false} md={3} lg={3} xl={3} className={classes.gridThree}>
                     <Container style={{margin:0,padding:0}}>
                     <div style={{minWidth:'100%', minHeight:'100%'}}>
-                                <List>
+                                <List style={{width:"100%"}}>
                                     <ListItem key={0}>
-                                    <Box>
+                                    <Box width="100%">
                                     <TextField
+                                        onKeyDown={handleTextFieldKeyDown}
+                                        onFocus={handleSearchChange}
                                         fullWidth
                                         placeholder="Search"
                                         variant="outlined"
@@ -1727,7 +1848,8 @@ export default function UserPage(props){
                                             style:{
                                                 fontFamily: "Segoe UI Symbol",
                                                 fontWeight: "bolder",
-                                                color:"#ffffff"
+                                                color:"#ffffff",
+                                                fontSize:"18px"
                                             },
                                             className:classes.inputColor,
                                             endAdornment: (
@@ -1744,6 +1866,45 @@ export default function UserPage(props){
                                     </Box>
                                     </ListItem>
                                     <Box width="90%" style={{border:`1px solid ${searchBorderColor}`, borderRadius:"20px", margin:"0 auto", boxShadow:`${searchBoxShadow}`}}>
+                                    {recentHeader}
+                                    {recentSearch.map((result, index)=>(
+                                        <div>
+                                        <ListItem style={{cursor:"pointer", background:""}} key={index} >
+                                            <ListItemAvatar>
+                                                <Avatar style={{background:"#00cdac"}}>
+                                                    <SearchIcon/>
+                                                </Avatar>
+                                            </ListItemAvatar>
+                                            <ListItemText primary={
+                                                <Box display="flex" flexDirection="column" alignItems="flex-start">
+                                                    <Typography component="div">
+                                                        <Box
+                                                            fontWeight="fontWeightBold"
+                                                            fontSize="1vw"
+                                                            style={{ 
+                                                                color:"#ffffff", wordWrap:"break-word",
+                                                                marginBottom:"0px !important", paddingBottom:"0px !important"
+                                                            }}
+                                                            fontFamily='Segoe UI Symbol'
+                                                                
+                                                        >
+                                                                {`${result.term}`}
+                                                        </Box>
+                                                    </Typography>
+
+                                                </Box>
+                                            }/>
+                                            <ListItemSecondaryAction>
+                                                <IconButton edge="end">
+                                                    <Clear style={{fill:"#00cdac"}}/>
+                                                </IconButton>
+                                            </ListItemSecondaryAction>
+                                        </ListItem>
+                                        <Divider className={classes.dividerColor} variant="fullWidth"/>
+                                        </div>
+                                    ))}
+                                    
+                                    
                                     {emptyResult.map((result, index)=>(
                                         <div>
                                             <ListItem key={index}>
