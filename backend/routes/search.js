@@ -66,7 +66,8 @@ router.route('/searchHistory').get((req, res)=>{
                     const results = []
                     docs.forEach(element=>{
                         const result={
-                            term: element.searchTerm
+                            term: element.searchTerm,
+                            searchHistoryId: element._id
                         }
                         results.push(result)
                     })
@@ -85,6 +86,15 @@ router.route('/clearAll').delete((req, res)=>{
                      res.status(200).json({success:"true", message:"search History Cleared"})
                 })
                 .catch(err=>res.status(400).json("error: "+err))
+})
+
+router.route('/clearOne/:searchId').delete((req, res)=>{
+    const searchId = req.params.searchId
+    SearchHistory.findByIdAndDelete({_id:searchId})
+                 .then(()=>{
+                     res.status(200).json({success:"true", message:"deleted"})
+                 })
+                 .catch(err=>res.status(400).json("error: "+err))
 })
 
 

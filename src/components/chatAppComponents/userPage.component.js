@@ -800,6 +800,17 @@ export default function UserPage(props){
              })
     }
 
+    const deleteOne =(id, index)=>{
+        axios.delete("http://localhost:5000/search/clearOne/"+id)
+             .then((res)=>{
+                 console.log(res)
+                 if(res.status===200){ 
+                    setRecentSearch(recentSearch.filter(word => word!==recentSearch[index]));
+                 }
+             })
+             .catch(err=>{console.log("err: "+err)});
+    }
+
     const handleSearchChange = (e) => {
         setSearchValue(e.target.value)
         const emptyResults=[]
@@ -1895,7 +1906,7 @@ export default function UserPage(props){
                                                 </Box>
                                             }/>
                                             <ListItemSecondaryAction>
-                                                <IconButton edge="end">
+                                                <IconButton edge="end" onClick={()=>deleteOne(result.searchHistoryId, index)}>
                                                     <Clear style={{fill:"#00cdac"}}/>
                                                 </IconButton>
                                             </ListItemSecondaryAction>
