@@ -251,6 +251,10 @@ const useStyles = makeStyles(theme=>({
         ['& fieldset']:{
             borderRadius: "45px",
             border:"2px solid  #00cdac",
+        },  
+
+        '&::placeholder':{
+            color:"red"
         }
 
     },
@@ -278,6 +282,25 @@ const useStyles = makeStyles(theme=>({
         },
         '&.Mui-selected':{
             outline: 'none'
+        }
+    },
+
+    scrollBar:{
+        overflowY:"auto",
+        margin:0,
+        padding:0,
+
+        '&::-webkit-scrollbar':{
+            width:"0.5vw",
+            backgroundColor:"#00cdac"
+        },
+        '&::-webkit-scrollbar-track':{
+            background:"white",
+            boxShadow:'inset 0 0 6px rgba(0,0,0,0.00)',
+            boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+        },
+        '&::-webkit-scrollbar-thumb':{
+            background: "#00cdac"
         }
     },
 
@@ -315,7 +338,8 @@ const useStyles = makeStyles(theme=>({
         color:"white"
     },
     rootDiv: {
-        flexGrow: 1
+        flexGrow: 1,
+        
     },
 
     rootHeader:{
@@ -1616,12 +1640,8 @@ export default function UserPage(props){
 
                                                     <Divider/>
                                                     <Box style={{paddingTop:"2px", paddingBottom:"2px"}}>
-                                                        <div style={{width:"100%", overflowY:"auto", 
-                                                             maxHeight:"60vh", padding:"8px",
-                                                             scrollbarColor:"#00cdac #ffffff",
-                                                             scrollbarWidth:"thin",
-                                                             
-                                                             }}
+                                                        <div className={classes.scrollBar} style={{width:"100%", 
+                                                             maxHeight:"60vh",}}
                                                         >
                                                             <Box mt={1} pt={1} mb={1} pb={1} display="flex" alignContent="center"  style={{ width:"100%", height:"100%"}}>
                                                                     <div style={{margin:"0 auto"}}>
