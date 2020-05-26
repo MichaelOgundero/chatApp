@@ -124,7 +124,7 @@ const AntTab = withStyles(theme=>({
             fontWeight: theme.typography.fontWeightMedium
         },
         '&:focus':{
-            color: "#00cdac"
+            color: "#02aab0"
         },
     },
     selected: {},
@@ -253,9 +253,6 @@ const useStyles = makeStyles(theme=>({
             border:"2px solid  #00cdac",
         },  
 
-        '&::placeholder':{
-            color:"red"
-        }
 
     },
     editProfile:{
@@ -1017,21 +1014,8 @@ export default function UserPage(props){
                                 setStatus(!status)
                                 tileData[i]["smn"] = status
 
-                                if(tileData[i].smn){
-                                    
+                                if(tileData[i].smn){   
                                 }
-
-                                /*tileData[i].imageLiked = !tileData[i].imageLiked
-                                
-                                if(tileData[i].imageLiked){
-                                    console.log(tileData[i].imageLiked)
-                                    tileData[i]["smn"] = likeIcon
-                                    setLikeIcon(<LikedImage/>)
-                                    console.log(tileData[i]["smn"])
-                                    console.log(tileData[i+1]["smn"])
-                                }else{
-                                    //console.log(tileData[i].imageLiked)
-                                }*/
                             }}>
                                 {tileData[i].mockLike}
                             </IconButton>
@@ -1817,11 +1801,7 @@ export default function UserPage(props){
                                 <AntTab label="Friends" {...a11yProps(2)}/>
                             </AntTabs>
                             <TabPanel value={currentTab} index={0}>
-                                <Typography>
-                                    <Box fontFamily='Segoe UI Symbol'>
-                                        About
-                                    </Box>
-                                </Typography>
+                                
                             </TabPanel>
                             <TabPanel value={currentTab} index={1}>
                                 <Box style={{ padding:"0", margin:"0"}} p={0} m={0}>
