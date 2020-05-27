@@ -12,29 +12,40 @@ import IconButton from '@material-ui/core/IconButton'
 import Hidden from '@material-ui/core/Hidden'
 import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import {List,ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction} from '@material-ui/core'
+import {List,ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction, Divider} from '@material-ui/core'
 
 import CreateIcon from '@material-ui/icons/Create'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import SearchIcon from '@material-ui/icons/Search'
+import {Info, Videocam, Call, BorderLeft} from '@material-ui/icons'
 
 import profilePic from "../../assets/images/profileImage.jpg"
 import profilePic2 from "../../assets/images/profileImageAnime.jpg"
 
 
 const useStyles = makeStyles(theme=>({
+
     gridOne:{
         padding: theme.spacing(1),
         background:'#29323c', 
-
+        height:'100vh'
+    },
+    gridTwo:{
+        padding: theme.spacing(1),
+        background:'#29323c', 
+        height:'100vh',
+        borderLeft: "1px solid white"
     },
     userAvatar:{
         float:"left"
     },
     userAvatarSize:{
         width: theme.spacing(6),
-        height: theme.spacing(6)
+        height: theme.spacing(6),
+        '&:hover': {
+            backgroundColor: "white",
+        }
     },
     messageSeen:{
         width: theme.spacing(2),
@@ -139,7 +150,6 @@ export default function Messages(props){
     return(
         <Grid container component="main">
             <Grid className={classes.gridOne} item xs={2} sm={3} md={3} lg={3} xl={3}>
-                <div style={{width:"100%"}}>
                 <Box className={classes.userAvatar}>
                     <Avatar className={classes.userAvatarSize} src={profilePic}></Avatar>
                 </Box>
@@ -204,10 +214,10 @@ export default function Messages(props){
                                             {`Name Nameson`}
                                         </Box>
                                         <Box
-                                            fontWeight="fontWeightBold"
+                                            fontWeight="fontWeightRegular"
                                             fontSize="0.8vw"
                                             style={{ 
-                                            color:"grey",
+                                            color:"#A4A4A4",
                                             }}
                                                 fontFamily='Segoe UI Symbol'
                                         >
@@ -223,10 +233,56 @@ export default function Messages(props){
                         </List>
                     </Box>
                 </Hidden>
-                </div>
             </Grid>
-            <Grid item xs={10} sm={9} md={9} lg={9} xl={9}  style={{border:"1px solid blue"}}>
-                
+            <Grid className={classes.gridTwo} item xs={10} sm={9} md={9} lg={9} xl={9}>
+                <Box display="flex" flexDirection="row" className={classes.userAvatar}>
+                    <Box>
+                        <Avatar className={classes.userAvatarSize} src={profilePic2}></Avatar>
+                    </Box>
+                    <Box ml={2}>
+                        <Typography component="div">
+                            <Box
+                                fontWeight="fontWeightBold"
+                                fontSize="1vw"
+                                style={{ 
+                                    color:"white",
+                                }}
+                                    fontFamily='Segoe UI Symbol'
+                                >
+                                    {`Name Nameson`}
+                            </Box>
+                            <Box
+                                fontWeight="fontWeightRegular"
+                                fontSize="0.8vw"
+                                style={{ 
+                                    color:"#A4A4A4",
+                                }}
+                                    fontFamily='Segoe UI Symbol'
+                                >
+                                    {`Active`}
+                            </Box>
+                        </Typography>
+                    </Box>
+                </Box>
+
+                <Box className={classes.headerOthers}>
+                    <Box display="inline">
+                        <IconButton className={classes.userAvatarSize}>
+                            <Call style={{fill:"#00cdac"}}/>
+                        </IconButton>
+                    </Box>
+                    <Box display="inline" style={{paddingLeft:"8px"}}>
+                        <IconButton className={classes.userAvatarSize}>
+                            <Videocam style={{fill:"#00cdac"}}/>   
+                        </IconButton>
+                    </Box>
+                    <Box display="inline" style={{paddingLeft:"8px"}}>
+                        <IconButton className={classes.userAvatarSize}>
+                            <Info style={{fill:"#00cdac"}}/>   
+                        </IconButton>
+                    </Box>
+                </Box>
+
             </Grid>
         </Grid>
     )
